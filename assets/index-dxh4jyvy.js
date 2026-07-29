@@ -11242,9 +11242,11 @@ function de() {
           let newKadus = ae.map(k => ({ ...k }));
 
           validFiles.forEach(file => {
-            let isImage = file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i) || (file.mimeType && file.mimeType.startsWith("image"));
+            let fileLower = file.name.toLowerCase();
+            if (fileLower.includes("readme") || fileLower.includes("panduan") || fileLower.includes("guide")) return;
+
             let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
-            let gdriveUrl = isImage ? `https://lh3.googleusercontent.com/d/${file.id}` : null;
+            let gdriveUrl = `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
 
             let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
             let pos = parts[0] || "";
@@ -11329,7 +11331,7 @@ function de() {
             return;
           }
 
-          let validFiles = data.files.filter(f => !f.name.endsWith(".txt"));
+          let validFiles = data.files;
           if (validFiles.length === 0) {
             setPkkInti([]);
             setPkkPokja([]);
@@ -11355,9 +11357,11 @@ function de() {
           let gdrivePokjaKetua = {};
 
           validFiles.forEach(file => {
-            let cleanName = file.name.replace(/\.(jpg|jpeg|png|webp|gif)$/i, "").trim();
-            let gdriveUrl = `https://lh3.googleusercontent.com/d/${file.id}`;
-            if (file.mimeType && !file.mimeType.startsWith("image") && !file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return;
+            let fileLower = file.name.toLowerCase();
+            if (fileLower.includes("readme") || fileLower.includes("panduan") || fileLower.includes("guide")) return;
+
+            let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
+            let gdriveUrl = `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
 
             let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
             let pos = parts[0] || "";
