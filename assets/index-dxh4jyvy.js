@@ -10258,7 +10258,7 @@ function ce() {
         position: `relative`,
         maxWidth: 1200,
         margin: `0 auto`,
-        padding: `120px 24px 80px`,
+        padding: `100px 24px 40px`,
         width: `100%`
       },
       children: (0, x.jsxs)(`div`, {
@@ -10391,10 +10391,8 @@ function ce() {
       })
     }), (0, x.jsx)(`div`, {
       style: {
-        position: `absolute`,
-        bottom: 0,
-        left: 0,
-        right: 0,
+        position: `relative`,
+        zIndex: 2,
         background: `rgba(15, 40, 25, 0.85)`,
         backdropFilter: `blur(12px)`,
         borderTop: `1px solid rgba(201,149,42,0.3)`
@@ -12697,8 +12695,8 @@ function ye() {
       }), (0, x.jsxs)(`div`, {
         style: {
           display: `grid`,
-          gridTemplateColumns: `1fr 1fr`,
-          gap: 48
+          gridTemplateColumns: `repeat(auto-fit, minmax(280px, 1fr))`,
+          gap: 32
         },
         children: [(0, x.jsxs)(`div`, {
           children: [(0, x.jsx)(`div`, {
@@ -12748,14 +12746,17 @@ function ye() {
                     fontFamily: `DM Mono, monospace`,
                     textTransform: `uppercase`,
                     letterSpacing: `0.1em`,
-                    marginBottom: 4
+                    marginBottom: 2
                   },
                   children: e.label
                 }), (0, x.jsx)(`div`, {
                   style: {
-                    color: `#1c1a14`,
                     fontSize: 14,
-                    lineHeight: 1.5
+                    color: `#1a4731`,
+                    fontWeight: 600,
+                    lineHeight: 1.5,
+                    wordBreak: `break-word`,
+                    overflowWrap: `anywhere`
                   },
                   children: e.nilai
                 })]
