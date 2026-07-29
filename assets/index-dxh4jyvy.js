@@ -1038,11 +1038,9 @@ var l = o((e => {
         throw Error()
       } catch (e) {
         var t = e.stack.trim().match(/\n( *(at )?)/);
-        Ce = t && t[1] || ``, we = -1 < e.stack.indexOf(`
-    at`) ? ` (<anonymous>)` : -1 < e.stack.indexOf(`@`) ? `@unknown:0:0` : ``
+        Ce = t && t[1] || ``, we = -1 < e.stack.indexOf("\n    at") ? ` (<anonymous>)` : -1 < e.stack.indexOf(`@`) ? `@unknown:0:0` : ``
       }
-      return `
-` + Ce + e + we
+      return "\n" + Ce + e + we
     }
     var Ee = !1;
 
@@ -1100,10 +1098,8 @@ var l = o((e => {
           o = a[0],
           s = a[1];
         if (o && s) {
-          var c = o.split(`
-`),
-            l = s.split(`
-`);
+          var c = o.split("\n"),
+            l = s.split("\n");
           for (i = r = 0; r < c.length && !c[r].includes(`DetermineComponentFrameRoot`);) r++;
           for (; i < l.length && !l[i].includes(`DetermineComponentFrameRoot`);) i++;
           if (r === c.length || i === l.length)
@@ -1113,8 +1109,7 @@ var l = o((e => {
               if (r !== 1 || i !== 1)
                 do
                   if (r--, i--, 0 > i || c[r] !== l[i]) {
-                    var u = `
-` + c[r].replace(` at new `, ` at `);
+                    var u = "\n" + c[r].replace(` at new `, ` at `);
                     return e.displayName && u.includes(`<anonymous>`) && (u = u.replace(`<anonymous>`, e
                       .displayName)), u
                   } while (1 <= r && 0 <= i);
@@ -1161,8 +1156,7 @@ var l = o((e => {
         return t
       } catch (e) {
         return `
-Error generating stack: ` + e.message + `
-` + e.stack
+Error generating stack: ` + e.message + "\n" + e.stack
       }
     }
     var Ae = Object.prototype.hasOwnProperty,
@@ -8008,8 +8002,7 @@ Error generating stack: ` + e.message + `
       Ad = /\u0000|\uFFFD/g;
 
     function jd(e) {
-      return (typeof e == `string` ? e : `` + e).replace(kd, `
-`).replace(Ad, ``)
+      return (typeof e == `string` ? e : `` + e).replace(kd, "\n").replace(Ad, ``)
     }
 
     function Md(e, t) {
@@ -9930,7 +9923,9 @@ Error generating stack: ` + e.message + `
   b = c(u(), 1),
   x = v(),
   ee = `1HoyodhCKPisgj1X--3hH3wBxVMT9BnjU`,
-  S = `AIzaSyB7YjjXyxnpPoJiyOUKDi87YezU3WwsNAo`,
+  S = `AIzaSyAFtBYkrwy72VY4QEgVOg-6Xuh4eFxWIcQ`,
+  GDRIVE_GALERI_FOLDER_ID = `1eSlgdubHZmH-nyYcR3VpBEeTzz2cpqW4`,
+  GDRIVE_PERANGKAT_FOLDER_ID = `10Om41wIBdsarmksMlwEgpF4t8clPBwqS`,
   C =
     `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31791.82!2d105.3441!3d-5.3971!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40c0a3a3d37f4d%3A0x9a5a3c2b4c4f6c00!2sTanjung%20Bintang%2C%20Lampung%20Selatan!5e0!3m2!1sid!2sid!4v1720000000000`,
   te = [{
@@ -10942,7 +10937,42 @@ function T() {
 }
 
 function E() {
-  let [e, t] = (0, b.useState)(null);
+  let [selectedIndex, setSelectedIndex] = (0, b.useState)(null);
+  let [files, setFiles] = (0, b.useState)([]);
+  let [loading, setLoading] = (0, b.useState)(!1);
+  let [error, setError] = (0, b.useState)(null);
+
+  let isConfigured = GDRIVE_GALERI_FOLDER_ID && GDRIVE_GALERI_FOLDER_ID !== "GANTI_DENGAN_FOLDER_ID_GALERI" && S !== "GANTI_DENGAN_API_KEY_GOOGLE_DRIVE";
+
+  (0, b.useEffect)(() => {
+    if (!isConfigured) {
+      setFiles(w.map((item) => ({
+        id: item.foto,
+        name: item.ket,
+        isStatic: true
+      })));
+      return;
+    }
+    setLoading(!0);
+    setError(null);
+    let url = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_GALERI_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType)&orderBy=name&key=${S}`;
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) throw Error(`Error ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        let imageFiles = (data.files ?? []).filter(f => !f.mimeType || f.mimeType.startsWith("image/"));
+        setFiles(imageFiles.length > 0 ? imageFiles : (data.files ?? []));
+      })
+      .catch((err) => {
+        setError("Gagal memuat galeri. Pastikan folder Google Drive sudah publik dan API Key valid.");
+      })
+      .finally(() => {
+        setLoading(!1);
+      });
+  }, [isConfigured]);
+
   return (0, x.jsxs)(`section`, {
     id: `galeri`,
     style: {
@@ -10984,10 +11014,51 @@ function E() {
         style: {
           display: `grid`,
           gridTemplateColumns: `repeat(3, 1fr)`,
-          gap: 16
+          gap: 24
         },
-        children: w.map((e, n) => (0, x.jsxs)(`div`, {
-          onClick: () => t(n),
+        children: loading ? (0, x.jsxs)(`div`, {
+          style: {
+            gridColumn: `span 3`,
+            textAlign: `center`,
+            padding: `60px 0`
+          },
+          children: [(0, x.jsx)(`div`, {
+            style: {
+              fontSize: 40,
+              marginBottom: 16,
+              animation: `spin 1s linear infinite`,
+              display: `inline-block`,
+              color: `#c9952a`
+            },
+            children: `⟳`
+          }), (0, x.jsx)(`div`, {
+            style: {
+              color: `#8b5e3c`,
+              fontSize: 14,
+              fontFamily: `Plus Jakarta Sans, sans-serif`
+            },
+            children: `Memuat foto galeri...`
+          })]
+        }) : error ? (0, x.jsx)(`div`, {
+          style: {
+            gridColumn: `span 3`,
+            textAlign: `center`,
+            color: `#e63946`,
+            padding: `40px 0`,
+            fontFamily: `Plus Jakarta Sans, sans-serif`
+          },
+          children: error
+        }) : files.length === 0 ? (0, x.jsx)(`div`, {
+          style: {
+            gridColumn: `span 3`,
+            textAlign: `center`,
+            color: `#8b5e3c`,
+            padding: `40px 0`,
+            fontFamily: `Plus Jakarta Sans, sans-serif`
+          },
+          children: `Tidak ada foto di folder galeri.`
+        }) : files.map((item, idx) => (0, x.jsxs)(`div`, {
+          onClick: () => setSelectedIndex(idx),
           style: {
             position: `relative`,
             borderRadius: 12,
@@ -10997,45 +11068,54 @@ function E() {
             background: `#e8d5a3`
           },
           children: [(0, x.jsx)(`img`, {
-            src: e.foto,
-            alt: e.ket,
+            src: item.isStatic ? item.id : `https://lh3.googleusercontent.com/d/${item.id}`,
+            alt: item.name,
             style: {
               width: `100%`,
               height: `100%`,
               objectFit: `cover`,
               display: `block`,
               transition: `transform 0.4s ease`
+            },
+            onMouseEnter: e => {
+              e.currentTarget.style.transform = `scale(1.05)`
+            },
+            onMouseLeave: e => {
+              e.currentTarget.style.transform = ``
             }
           }), (0, x.jsx)(`div`, {
             style: {
               position: `absolute`,
-              inset: 0,
-              background: `linear-gradient(to top, rgba(26,71,49,0.85) 0%, transparent 50%)`,
-              opacity: 0,
-              transition: `opacity 0.3s`,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: `28px 16px 14px`,
+              background: `linear-gradient(to top, rgba(15,40,25,0.85) 0%, rgba(15,40,25,0.4) 60%, transparent 100%)`,
               display: `flex`,
               alignItems: `flex-end`,
-              padding: `16px`
-            },
-            onMouseEnter: e => {
-              e.currentTarget.style.opacity = `1`
-            },
-            onMouseLeave: e => {
-              e.currentTarget.style.opacity = `0`
+              justifyContent: `flex-start`,
+              pointerEvents: `none`
             },
             children: (0, x.jsx)(`span`, {
               style: {
                 color: `white`,
                 fontFamily: `Playfair Display, serif`,
-                fontSize: 14
+                fontSize: 14,
+                fontWeight: 600,
+                textAlign: `left`,
+                textShadow: `0 1px 3px rgba(0,0,0,0.6)`,
+                whiteSpace: `nowrap`,
+                overflow: `hidden`,
+                textOverflow: `ellipsis`,
+                maxWidth: `100%`
               },
-              children: e.ket
+              children: item.name
             })
           })]
-        }, n))
+        }, idx))
       })]
-    }), e !== null && (0, x.jsx)(`div`, {
-      onClick: () => t(null),
+    }), selectedIndex !== null && files[selectedIndex] && (0, x.jsx)(`div`, {
+      onClick: () => setSelectedIndex(null),
       style: {
         position: `fixed`,
         inset: 0,
@@ -11053,10 +11133,12 @@ function E() {
           width: `100%`
         },
         children: [(0, x.jsx)(`img`, {
-          src: w[e].foto,
-          alt: w[e].ket,
+          src: files[selectedIndex].isStatic ? files[selectedIndex].id : `https://lh3.googleusercontent.com/d/${files[selectedIndex].id}`,
+          alt: files[selectedIndex].name,
           style: {
             width: `100%`,
+            maxHeight: `75vh`,
+            objectFit: `contain`,
             borderRadius: 12,
             display: `block`,
             boxShadow: `0 32px 80px rgba(0,0,0,0.6)`
@@ -11069,7 +11151,7 @@ function E() {
             textAlign: `center`,
             marginTop: 16
           },
-          children: w[e].ket
+          children: files[selectedIndex].name
         }), (0, x.jsxs)(`div`, {
           style: {
             display: `flex`,
@@ -11078,7 +11160,7 @@ function E() {
             marginTop: 20
           },
           children: [(0, x.jsx)(`button`, {
-            onClick: () => t((e - 1 + w.length) % w.length),
+            onClick: () => setSelectedIndex((selectedIndex - 1 + files.length) % files.length),
             style: {
               background: `rgba(201,149,42,0.2)`,
               border: `1px solid #c9952a`,
@@ -11090,7 +11172,7 @@ function E() {
             },
             children: `←`
           }), (0, x.jsx)(`button`, {
-            onClick: () => t(null),
+            onClick: () => setSelectedIndex(null),
             style: {
               background: `rgba(255,255,255,0.1)`,
               border: `1px solid rgba(255,255,255,0.2)`,
@@ -11101,7 +11183,7 @@ function E() {
             },
             children: `✕ Tutup`
           }), (0, x.jsx)(`button`, {
-            onClick: () => t((e + 1) % w.length),
+            onClick: () => setSelectedIndex((selectedIndex + 1) % files.length),
             style: {
               background: `rgba(201,149,42,0.2)`,
               border: `1px solid #c9952a`,
@@ -11129,6 +11211,221 @@ function E() {
 }
 
 function de() {
+  let [perangkat, setPerangkat] = (0, b.useState)(ie);
+  let [kadusList, setKadusList] = (0, b.useState)(ae);
+
+  let [pkkInti, setPkkInti] = (0, b.useState)([]);
+  let [pkkPokja, setPkkPokja] = (0, b.useState)([]);
+
+  let GDRIVE_PKK_FOLDER_ID = "1SS-tgp0PwUe3WjQ5BUswb-fSV6v_KYpz";
+
+  (0, b.useEffect)(() => {
+    if (!S || S === "GANTI_DENGAN_API_KEY_GOOGLE_DRIVE") return;
+
+    function formatTitle(str) {
+      if (!str) return "";
+      return str.split(/\s+/).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+    }
+
+    // 1. Fetch Perangkat Desa & Kepala Dusun Folder
+    if (GDRIVE_PERANGKAT_FOLDER_ID && GDRIVE_PERANGKAT_FOLDER_ID !== "GANTI_DENGAN_FOLDER_ID_PERANGKAT") {
+      let urlPerangkat = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_PERANGKAT_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType)&key=${S}`;
+      fetch(urlPerangkat)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (!data || !data.files) return;
+          
+          let validFiles = data.files;
+          if (validFiles.length === 0) return;
+
+          let gdrivePerangkatMap = [];
+          let newKadus = ae.map(k => ({ ...k }));
+
+          validFiles.forEach(file => {
+            let isImage = file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i) || (file.mimeType && file.mimeType.startsWith("image"));
+            let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
+            let gdriveUrl = isImage ? `https://lh3.googleusercontent.com/d/${file.id}` : null;
+
+            let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
+            let pos = parts[0] || "";
+            let name = parts.slice(1).join(" ").trim();
+            let posLower = pos.toLowerCase();
+
+            // Check Kepala Dusun (Exact Dusun Index 1-10+)
+            if (posLower.includes("dusun") || posLower.includes("kadus")) {
+              let dusunIdx = -1;
+              let dusunMatch = posLower.match(/\b(10|9|8|7|6|5|4|3|2|1|x|ix|viii|vii|vi|v|iv|iii|ii|i)\b/i);
+              if (dusunMatch) {
+                let val = dusunMatch[0].toLowerCase();
+                if (val === "10" || val === "x") dusunIdx = 9;
+                else if (val === "9" || val === "ix") dusunIdx = 8;
+                else if (val === "8" || val === "viii") dusunIdx = 7;
+                else if (val === "7" || val === "vii") dusunIdx = 6;
+                else if (val === "6" || val === "vi") dusunIdx = 5;
+                else if (val === "5" || val === "v") dusunIdx = 4;
+                else if (val === "4" || val === "iv") dusunIdx = 3;
+                else if (val === "3" || val === "iii") dusunIdx = 2;
+                else if (val === "2" || val === "ii") dusunIdx = 1;
+                else if (val === "1" || val === "i") dusunIdx = 0;
+              }
+
+              if (dusunIdx !== -1) {
+                while (newKadus.length <= dusunIdx) {
+                  let romanNum = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"][newKadus.length] || (newKadus.length + 1);
+                  newKadus.push({ dusun: `Dusun ${romanNum}`, nama: ``, foto: `` });
+                }
+                if (name) newKadus[dusunIdx].nama = name;
+                newKadus[dusunIdx].foto = gdriveUrl;
+                newKadus[dusunIdx].fileId = file.id;
+                return;
+              }
+            }
+
+            // Check Perangkat Desa (Future-Proof)
+            let officialTitle = formatTitle(pos);
+            if (posLower.includes("kepala desa") || posLower.includes("kades")) officialTitle = "Kepala Desa";
+            else if (posLower.includes("sekretaris")) officialTitle = "Sekretaris Desa";
+            else if (posLower.includes("keuangan")) officialTitle = "Kaur Keuangan";
+            else if (posLower.includes("perencanaan")) officialTitle = "Kaur Perencanaan";
+            else if (posLower.includes("pemerintahan")) officialTitle = "Kasi Pemerintahan";
+            else if (posLower.includes("pelayanan")) officialTitle = "Kasi Pelayanan";
+            else if (posLower.includes("kesejahteraan")) officialTitle = "Kasi Kesejahteraan";
+
+            gdrivePerangkatMap.push({
+              jabatan: officialTitle,
+              nama: name || formatTitle(pos),
+              foto: gdriveUrl,
+              fileId: file.id
+            });
+          });
+
+          if (gdrivePerangkatMap.length > 0) {
+            let orderPriority = ["Kepala Desa", "Sekretaris Desa", "Kaur Keuangan", "Kaur Perencanaan", "Kasi Pemerintahan", "Kasi Pelayanan", "Kasi Kesejahteraan"];
+            gdrivePerangkatMap.sort((a, b) => {
+              let idxA = orderPriority.indexOf(a.jabatan);
+              let idxB = orderPriority.indexOf(b.jabatan);
+              if (idxA !== -1 && idxB !== -1) return idxA - idxB;
+              if (idxA !== -1) return -1;
+              if (idxB !== -1) return 1;
+              return a.jabatan.localeCompare(b.jabatan);
+            });
+            setPerangkat(gdrivePerangkatMap);
+          }
+
+          setKadusList(newKadus);
+        })
+        .catch(() => {});
+    }
+
+    // 2. Fetch Dedicated PKK Folder
+    if (GDRIVE_PKK_FOLDER_ID) {
+      let urlPkk = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_PKK_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType)&key=${S}`;
+      fetch(urlPkk)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          if (!data || !data.files || data.files.length === 0) {
+            setPkkInti([]);
+            setPkkPokja([]);
+            return;
+          }
+
+          let validFiles = data.files.filter(f => !f.name.endsWith(".txt"));
+          if (validFiles.length === 0) {
+            setPkkInti([]);
+            setPkkPokja([]);
+            return;
+          }
+
+          let defaultPkkInti = [
+            { jabatan: `Pembina`, nama: ``, ikon: `🎖️` },
+            { jabatan: `Ketua`, nama: ``, ikon: `👑` },
+            { jabatan: `Penasehat`, nama: ``, ikon: `📜` },
+            { jabatan: `Sekretaris`, nama: ``, ikon: `✍️` },
+            { jabatan: `Bendahara`, nama: ``, ikon: `💰` }
+          ];
+
+          let defaultPkkPokja = [
+            { pokja: `POKJA I`, ketua: ``, anggota: [] },
+            { pokja: `POKJA II`, ketua: ``, anggota: [] },
+            { pokja: `POKJA III`, ketua: ``, anggota: [] },
+            { pokja: `POKJA IV`, ketua: ``, anggota: [] }
+          ];
+
+          let gdrivePokjaMembers = {};
+          let gdrivePokjaKetua = {};
+
+          validFiles.forEach(file => {
+            let cleanName = file.name.replace(/\.(jpg|jpeg|png|webp|gif)$/i, "").trim();
+            let gdriveUrl = `https://lh3.googleusercontent.com/d/${file.id}`;
+            if (file.mimeType && !file.mimeType.startsWith("image") && !file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return;
+
+            let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
+            let pos = parts[0] || "";
+            let name = parts.slice(1).join(" ").trim();
+            let posLower = pos.toLowerCase();
+
+            // A. Check Pokja (PKK)
+            if (posLower.includes("pokja")) {
+              let targetPokja = "";
+              let pokMatch = posLower.match(/\b(10|9|8|7|6|5|4|3|2|1|x|ix|viii|vii|vi|v|iv|iii|ii|i)\b/i);
+              if (pokMatch) {
+                let val = pokMatch[0].toUpperCase();
+                let romanMap = { "1":"I", "2":"II", "3":"III", "4":"IV", "5":"V", "6":"VI", "7":"VII", "8":"VIII", "9":"IX", "10":"X" };
+                targetPokja = `POKJA ${romanMap[val] || val}`;
+              }
+
+              if (targetPokja) {
+                if (!gdrivePokjaMembers[targetPokja]) gdrivePokjaMembers[targetPokja] = [];
+                let isKetua = posLower.includes("ketua") || (parts.length >= 3 && parts[1].toLowerCase().includes("ketua"));
+                let realName = isKetua ? (parts.length >= 3 ? parts.slice(2).join(" ").trim() : name) : (parts.length >= 3 ? parts.slice(2).join(" ").trim() : name);
+
+                if (isKetua && realName) {
+                  gdrivePokjaKetua[targetPokja] = realName;
+                } else if (realName) {
+                  let members = realName.split(/[,;]/).map(m => m.trim()).filter(Boolean);
+                  members.forEach(m => {
+                    if (!gdrivePokjaMembers[targetPokja].includes(m)) {
+                      gdrivePokjaMembers[targetPokja].push(m);
+                    }
+                  });
+                }
+                return;
+              }
+            }
+
+            // B. Check Pengurus Inti PKK
+            let pkkIntiIdx = -1;
+            if (posLower.includes("pembina")) pkkIntiIdx = 0;
+            else if (posLower.includes("ketua")) pkkIntiIdx = 1;
+            else if (posLower.includes("penasehat") || posLower.includes("penasihat")) pkkIntiIdx = 2;
+            else if (posLower.includes("sekretaris")) pkkIntiIdx = 3;
+            else if (posLower.includes("bendahara")) pkkIntiIdx = 4;
+
+            if (pkkIntiIdx !== -1) {
+              if (name) defaultPkkInti[pkkIntiIdx].nama = name;
+              defaultPkkInti[pkkIntiIdx].foto = gdriveUrl;
+              defaultPkkInti[pkkIntiIdx].fileId = file.id;
+              return;
+            }
+          });
+
+          setPkkInti(defaultPkkInti);
+
+          let allPokjaKeys = Array.from(new Set([...defaultPkkPokja.map(p => p.pokja), ...Object.keys(gdrivePokjaKetua), ...Object.keys(gdrivePokjaMembers)]));
+          let activePokja = allPokjaKeys.map(key => {
+            return {
+              pokja: key,
+              ketua: gdrivePokjaKetua[key] || "",
+              anggota: gdrivePokjaMembers[key] || []
+            };
+          });
+
+          setPkkPokja(activePokja);
+        })
+        .catch(() => {});
+    }
+  }, []);
+
   return (0, x.jsxs)(`section`, {
     id: `perangkat`,
     style: {
@@ -11166,13 +11463,49 @@ function de() {
           },
           children: `Perangkat Desa`
         })]
-      }), (0, x.jsx)(`div`, {
+      }), (perangkat.length === 0) ? (0, x.jsxs)(`div`, {
+        style: {
+          background: `white`,
+          borderRadius: 16,
+          border: `1.5px dashed #c9952a`,
+          padding: `40px 24px`,
+          textAlign: `center`,
+          maxWidth: 640,
+          margin: `0 auto`,
+          boxShadow: `0 4px 20px rgba(26,71,49,0.06)`
+        },
+        children: [
+          (0, x.jsx)(`div`, {
+            style: { fontSize: 36, marginBottom: 12 },
+            children: `🏛️`
+          }),
+          (0, x.jsx)(`div`, {
+            style: {
+              fontFamily: `Playfair Display, serif`,
+              fontSize: 18,
+              fontWeight: 700,
+              color: `#1a4731`,
+              marginBottom: 8
+            },
+            children: `Data Perangkat Desa Sedang Dalam Masa Pergantian`
+          }),
+          (0, x.jsx)(`div`, {
+            style: {
+              fontSize: 13,
+              color: `#8b5e3c`,
+              fontFamily: `DM Mono, monospace`,
+              lineHeight: 1.5
+            },
+            children: `Informasi Struktur Perangkat Desa Sukanegara sedang diperbarui. Data akan otomatis tampil setelah berkas diunggah ke Google Drive.`
+          })
+        ]
+      }) : (0, x.jsx)(`div`, {
         style: {
           display: `grid`,
           gridTemplateColumns: `repeat(3, 1fr)`,
           gap: 24
         },
-        children: ie.map((e, t) => (0, x.jsxs)(`div`, {
+        children: perangkat.map((e, t) => (0, x.jsxs)(`div`, {
           style: {
             background: t === 0 ? `#1a4731` : `white`,
             borderRadius: 16,
@@ -11193,17 +11526,27 @@ function de() {
               overflow: `hidden`,
               margin: `0 auto 16px`,
               border: t === 0 ? `3px solid #c9952a` : `2px solid #e8d5a3`,
-              background: `#e8d5a3`
+              background: t === 0 ? `#2d6a4f` : `#e8d5a3`,
+              display: `flex`,
+              alignItems: `center`,
+              justifyContent: `center`,
+              fontSize: 36
             },
-            children: (0, x.jsx)(`img`, {
+            children: e.foto ? (0, x.jsx)(`img`, {
               src: e.foto,
               alt: e.nama,
+              onError: evt => {
+                if (e.fileId) {
+                  evt.currentTarget.onerror = null;
+                  evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${e.fileId}&sz=w500`;
+                }
+              },
               style: {
                 width: `100%`,
                 height: `100%`,
                 objectFit: `cover`
               }
-            })
+            }) : `👤`
           }), (0, x.jsx)(`div`, {
             style: {
               fontFamily: `Playfair Display, serif`,
@@ -11212,7 +11555,7 @@ function de() {
               color: t === 0 ? `#fdf6e3` : `#1a4731`,
               marginBottom: 6
             },
-            children: e.nama
+            children: e.nama || `(Sedang Masa Pergantian)`
           }), (0, x.jsx)(`div`, {
             style: {
               fontSize: 12,
@@ -11252,13 +11595,48 @@ function de() {
             },
             children: `Kepala Dusun`
           })]
-        }), (0, x.jsx)(`div`, {
+        }), kadusList.every(k => !k.nama && !k.foto) ? (0, x.jsxs)(`div`, {
+          style: {
+            background: `white`,
+            borderRadius: 16,
+            border: `1.5px dashed #c9952a`,
+            padding: `32px 24px`,
+            textAlign: `center`,
+            maxWidth: 640,
+            margin: `0 auto`,
+            boxShadow: `0 4px 20px rgba(26,71,49,0.06)`
+          },
+          children: [
+            (0, x.jsx)(`div`, {
+              style: { fontSize: 32, marginBottom: 10 },
+              children: `🏡`
+            }),
+            (0, x.jsx)(`div`, {
+              style: {
+                fontFamily: `Playfair Display, serif`,
+                fontSize: 16,
+                fontWeight: 700,
+                color: `#1a4731`,
+                marginBottom: 6
+              },
+              children: `Data Kepala Dusun Sedang Dalam Masa Pergantian`
+            }),
+            (0, x.jsx)(`div`, {
+              style: {
+                fontSize: 12,
+                color: `#8b5e3c`,
+                fontFamily: `DM Mono, monospace`
+              },
+              children: `Informasi Pimpinan Wilayah (Kepala Dusun) Desa Sukanegara sedang diperbarui.`
+            })
+          ]
+        }) : (0, x.jsx)(`div`, {
           style: {
             display: `grid`,
             gridTemplateColumns: `repeat(6, 1fr)`,
             gap: 16
           },
-          children: ae.map((e, t) => (0, x.jsxs)(`div`, {
+          children: kadusList.map((e, t) => (0, x.jsxs)(`div`, {
             style: {
               background: `white`,
               borderRadius: 14,
@@ -11287,9 +11665,24 @@ function de() {
                 justifyContent: `center`,
                 margin: `0 auto 14px`,
                 fontSize: 22,
-                border: `2px solid #c9952a`
+                border: `2px solid #c9952a`,
+                overflow: `hidden`
               },
-              children: `🏡`
+              children: e.foto ? (0, x.jsx)(`img`, {
+                src: e.foto,
+                alt: e.nama,
+                onError: evt => {
+                  if (e.fileId) {
+                    evt.currentTarget.onerror = null;
+                    evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${e.fileId}&sz=w500`;
+                  }
+                },
+                style: {
+                  width: `100%`,
+                  height: `100%`,
+                  objectFit: `cover`
+                }
+              }) : `🏡`
             }), (0, x.jsx)(`div`, {
               style: {
                 fontSize: 10,
@@ -11308,7 +11701,7 @@ function de() {
                 color: `#1a4731`,
                 lineHeight: 1.3
               },
-              children: e.nama
+              children: e.nama || `(Sedang Masa Pergantian)`
             }), (0, x.jsx)(`div`, {
               style: {
                 fontSize: 10,
@@ -11320,16 +11713,272 @@ function de() {
             })]
           }, t))
         })]
+      }), (0, x.jsxs)(`div`, {
+        style: {
+          marginTop: 64,
+          paddingTop: 48,
+          borderTop: `2px dashed rgba(201,149,42,0.3)`
+        },
+        children: [
+          (0, x.jsxs)(`div`, {
+            style: {
+              textAlign: `center`,
+              marginBottom: 36
+            },
+            children: [
+              (0, x.jsx)(`div`, {
+                style: {
+                  color: `#c9952a`,
+                  fontSize: 12,
+                  letterSpacing: `0.18em`,
+                  textTransform: `uppercase`,
+                  fontFamily: `DM Mono, monospace`,
+                  marginBottom: 10
+                },
+                children: `— Pemberdayaan Kesejahteraan Keluarga —`
+              }),
+              (0, x.jsx)(`h3`, {
+                style: {
+                  fontFamily: `Playfair Display, serif`,
+                  fontSize: `clamp(26px, 4vw, 36px)`,
+                  color: `#1a4731`,
+                  fontWeight: 700,
+                  marginBottom: 8
+                },
+                children: `Struktur TP PKK Desa Sukanegara`
+              }),
+              (0, x.jsx)(`p`, {
+                style: {
+                  color: `#8b5e3c`,
+                  fontSize: 13,
+                  fontFamily: `DM Mono, monospace`
+                },
+                children: `Kecamatan Tanjung Bintang - Kabupaten Lampung Selatan`
+              })
+            ]
+          }),
+          (pkkInti.length === 0 && pkkPokja.length === 0) ? (0, x.jsxs)(`div`, {
+            style: {
+              background: `white`,
+              borderRadius: 16,
+              border: `1.5px dashed #c9952a`,
+              padding: `40px 24px`,
+              textAlign: `center`,
+              maxWidth: 640,
+              margin: `0 auto`,
+              boxShadow: `0 4px 20px rgba(26,71,49,0.06)`
+            },
+            children: [
+              (0, x.jsx)(`div`, {
+                style: { fontSize: 36, marginBottom: 12 },
+                children: `🌺`
+              }),
+              (0, x.jsx)(`div`, {
+                style: {
+                  fontFamily: `Playfair Display, serif`,
+                  fontSize: 18,
+                  fontWeight: 700,
+                  color: `#1a4731`,
+                  marginBottom: 8
+                },
+                children: `Data Struktur PKK Sedang Dalam Masa Pergantian`
+              }),
+              (0, x.jsx)(`div`, {
+                style: {
+                  fontSize: 13,
+                  color: `#8b5e3c`,
+                  fontFamily: `DM Mono, monospace`,
+                  lineHeight: 1.5
+                },
+                children: `Informasi kepengurusan TP PKK Desa Sukanegara sedang diperbarui. Data akan otomatis tampil setelah foto/berkas diunggah ke Google Drive.`
+              })
+            ]
+          }) : (0, x.jsxs)(`div`, {
+            children: [
+              pkkInti.length > 0 ? (0, x.jsx)(`div`, {
+                style: {
+                  display: `grid`,
+                  gridTemplateColumns: `repeat(5, 1fr)`,
+                  gap: 16,
+                  marginBottom: 32
+                },
+                children: pkkInti.map((item, idx) => (0, x.jsxs)(`div`, {
+                  style: {
+                    background: idx === 1 ? `#1a4731` : `white`,
+                    borderRadius: 14,
+                    border: idx === 1 ? `2px solid #c9952a` : `1px solid #e8d5a3`,
+                    padding: `20px 14px`,
+                    textAlign: `center`,
+                    boxShadow: `0 4px 16px rgba(26,71,49,0.08)`,
+                    transition: `transform 0.2s`
+                  },
+                  onMouseEnter: evt => evt.currentTarget.style.transform = `translateY(-3px)`,
+                  onMouseLeave: evt => evt.currentTarget.style.transform = ``,
+                  children: [
+                    (0, x.jsx)(`div`, {
+                      style: {
+                        width: 56,
+                        height: 56,
+                        borderRadius: `50%`,
+                        overflow: `hidden`,
+                        margin: `0 auto 10px`,
+                        border: idx === 1 ? `2px solid #c9952a` : `2px solid #e8d5a3`,
+                        background: idx === 1 ? `#2d6a4f` : `#f5e6c8`,
+                        display: `flex`,
+                        alignItems: `center`,
+                        justifyContent: `center`,
+                        fontSize: 24
+                      },
+                      children: item.foto ? (0, x.jsx)(`img`, {
+                        src: item.foto,
+                        alt: item.nama,
+                        onError: evt => {
+                          if (item.fileId) {
+                            evt.currentTarget.onerror = null;
+                            evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${item.fileId}&sz=w500`;
+                          }
+                        },
+                        style: {
+                          width: `100%`,
+                          height: `100%`,
+                          objectFit: `cover`
+                        }
+                      }) : item.ikon
+                    }),
+                    (0, x.jsx)(`div`, {
+                      style: {
+                        fontSize: 10,
+                        fontFamily: `DM Mono, monospace`,
+                        color: idx === 1 ? `#f0c060` : `#c9952a`,
+                        textTransform: `uppercase`,
+                        letterSpacing: `0.08em`,
+                        marginBottom: 4
+                      },
+                      children: item.jabatan
+                    }),
+                    (0, x.jsx)(`div`, {
+                      style: {
+                        fontFamily: `Playfair Display, serif`,
+                        fontSize: 14,
+                        fontWeight: 700,
+                        color: idx === 1 ? `#fdf6e3` : `#1a4731`
+                      },
+                      children: item.nama || `(Sedang Pergantian)`
+                    })
+                  ]
+                }, idx))
+              }) : null,
+              pkkPokja.length > 0 ? (0, x.jsx)(`div`, {
+                style: {
+                  display: `grid`,
+                  gridTemplateColumns: `repeat(4, 1fr)`,
+                  gap: 16
+                },
+                children: pkkPokja.map((pok, idx) => (0, x.jsxs)(`div`, {
+                  style: {
+                    background: `white`,
+                    borderRadius: 14,
+                    border: `1px solid #e8d5a3`,
+                    padding: `22px 18px`,
+                    boxShadow: `0 2px 12px rgba(26,71,49,0.06)`
+                  },
+                  children: [
+                    (0, x.jsxs)(`div`, {
+                      style: {
+                        borderBottom: `1.5px solid #f0e6c8`,
+                        paddingBottom: 12,
+                        marginBottom: 12,
+                        textAlign: `center`
+                      },
+                      children: [
+                        (0, x.jsx)(`div`, {
+                          style: {
+                            fontSize: 11,
+                            fontFamily: `DM Mono, monospace`,
+                            color: `#c9952a`,
+                            fontWeight: 700,
+                            letterSpacing: `0.1em`,
+                            marginBottom: 4
+                          },
+                          children: pok.pokja
+                        }),
+                        (0, x.jsxs)(`div`, {
+                          style: {
+                            fontSize: 13,
+                            color: `#1a4731`,
+                            fontWeight: 700,
+                            fontFamily: `Playfair Display, serif`
+                          },
+                          children: [`Ketua: `, pok.ketua || `(Sedang Pergantian)`]
+                        })
+                      ]
+                    }),
+                    (0, x.jsx)(`div`, {
+                      style: {
+                        fontSize: 10,
+                        fontFamily: `DM Mono, monospace`,
+                        color: `#8b5e3c`,
+                        textTransform: `uppercase`,
+                        letterSpacing: `0.08em`,
+                        marginBottom: 8
+                      },
+                      children: `Anggota:`
+                    }),
+                    (0, x.jsx)(`div`, {
+                      style: {
+                        display: `flex`,
+                        flexDirection: `column`,
+                        gap: 6
+                      },
+                      children: pok.anggota.length > 0 ? pok.anggota.map((ang, aIdx) => (0, x.jsxs)(`div`, {
+                        style: {
+                          fontSize: 12,
+                          color: `#3a3020`,
+                          display: `flex`,
+                          alignItems: `center`,
+                          gap: 6,
+                          fontFamily: `Plus Jakarta Sans, sans-serif`
+                        },
+                        children: [
+                          (0, x.jsx)(`span`, {
+                            style: {
+                              color: `#c9952a`,
+                              fontSize: 10
+                            },
+                            children: `•`
+                          }),
+                          ang
+                        ]
+                      }, aIdx)) : [(0, x.jsx)(`div`, {
+                        style: {
+                          fontSize: 11,
+                          color: `#8b5e3c`,
+                          fontStyle: `italic`,
+                          fontFamily: `DM Mono, monospace`
+                        },
+                        children: `(Sedang Masa Pergantian)`
+                      })]
+                    })
+                  ]
+                }, idx))
+              }) : null
+            ]
+          })
+        ]
       })]
     }), (0, x.jsx)(`style`, {
       children: `
         @media (max-width: 900px) {
           #perangkat div[style*="repeat(3, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
           #perangkat div[style*="repeat(6, 1fr)"] { grid-template-columns: repeat(3, 1fr) !important; }
+          #perangkat div[style*="repeat(5, 1fr)"] { grid-template-columns: repeat(3, 1fr) !important; }
+          #perangkat div[style*="repeat(4, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
         }
         @media (max-width: 520px) {
           #perangkat div[style*="repeat(3, 1fr)"] { grid-template-columns: 1fr !important; }
           #perangkat div[style*="repeat(6, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+          #perangkat div[style*="repeat(5, 1fr)"] { grid-template-columns: repeat(2, 1fr) !important; }
+          #perangkat div[style*="repeat(4, 1fr)"] { grid-template-columns: 1fr !important; }
         }
       `
     })]
@@ -11639,313 +12288,90 @@ function ge(e) {
 }
 
 function _e() {
-  let [e, t] = (0, b.useState)([]), [n, r] = (0, b.useState)(!1), [i, a] = (0, b.useState)(null), [o, s] = (0, b
-    .useState)(`Semua`), [c, l] = (0, b.useState)(``), u = ee !== `GANTI_DENGAN_FOLDER_ID_GOOGLE_DRIVE` && S !==
-      `GANTI_DENGAN_API_KEY_GOOGLE_DRIVE`;
+  let folderId = ee && ee !== `GANTI_DENGAN_FOLDER_ID_GOOGLE_DRIVE` ? ee : `1HoyodhCKPisgj1X--3hH3wBxVMT9BnjU`;
+  let [e, t] = (0, b.useState)([]),
+    [n, r] = (0, b.useState)(!0),
+    [o, s] = (0, b.useState)(`Semua`),
+    [c, l] = (0, b.useState)(``);
+
   (0, b.useEffect)(() => {
-    if (!u) return;
-    r(!0), a(null);
-    let e =
-      `https://www.googleapis.com/drive/v3/files?q='${ee}'+in+parents+and+trashed=false&fields=files(id,name,mimeType,size,modifiedTime,webViewLink,webContentLink)&orderBy=modifiedTime+desc&key=${S}`;
-    fetch(e).then(e => {
-      if (!e.ok) throw Error(`Error ${e.status}`);
-      return e.json()
-    }).then(e => t(e.files ?? [])).catch(e => a(
-      `Gagal memuat daftar surat. Pastikan folder Google Drive sudah publik dan API Key valid.`)).finally(() => r(!
-        1))
-  }, [u]);
-  let d = e.filter(e => {
-    let t = o === `Semua` || ge(e.name) === o,
-      n = e.name.toLowerCase().includes(c.toLowerCase());
-    return t && n
+    if (!ee || ee === `GANTI_DENGAN_FOLDER_ID_GOOGLE_DRIVE` || !S || S === `GANTI_DENGAN_API_KEY_GOOGLE_DRIVE`) {
+      r(!1);
+      return;
+    }
+    r(!0);
+    let apiUrl = `https://www.googleapis.com/drive/v3/files?q='${folderId}'+in+parents+and+trashed=false&fields=files(id,name,mimeType,size,modifiedTime,webViewLink,webContentLink)&orderBy=modifiedTime+desc&key=${S}`;
+    fetch(apiUrl)
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        if (data && data.files) {
+          t(data.files);
+        }
+      })
+      .catch(() => { })
+      .finally(() => r(!1));
+  }, [folderId]);
+
+  let d = e.filter(item => {
+    let matchCat = o === `Semua` || ge(item.name) === o;
+    let matchQuery = item.name.toLowerCase().includes(c.toLowerCase());
+    return matchCat && matchQuery;
   });
-  return (0, x.jsxs)(`section`, {
+
+  return (0, x.jsx)(`section`, {
     id: `surat`,
     style: {
       padding: `100px 0`,
       background: `#fdf6e3`
     },
-    children: [(0, x.jsxs)(`div`, {
+    children: (0, x.jsxs)(`div`, {
       style: {
         maxWidth: 1200,
         margin: `0 auto`,
         padding: `0 24px`
       },
-      children: [(0, x.jsxs)(`div`, {
-        style: {
-          textAlign: `center`,
-          marginBottom: 48
-        },
-        children: [(0, x.jsx)(`div`, {
-          className: `ornamen`,
+      children: [
+        (0, x.jsxs)(`div`, {
           style: {
-            color: `#c9952a`,
-            fontSize: 12,
-            letterSpacing: `0.18em`,
-            textTransform: `uppercase`,
-            fontFamily: `DM Mono, monospace`,
-            marginBottom: 16
+            textAlign: `center`,
+            marginBottom: 40
           },
-          children: `Administrasi Digital`
-        }), (0, x.jsx)(`h2`, {
-          style: {
-            fontFamily: `Playfair Display, serif`,
-            fontSize: `clamp(32px, 5vw, 52px)`,
-            color: `#1a4731`,
-            fontWeight: 700,
-            marginBottom: 16
-          },
-          children: `Unduh Surat & Formulir`
-        }), (0, x.jsx)(`p`, {
-          style: {
-            color: `#5a4a30`,
-            fontSize: 15,
-            maxWidth: 560,
-            margin: `0 auto`,
-            lineHeight: 1.7
-          },
-          children: `Dokumen tersedia secara digital. Unduh, isi, dan bawa ke Kantor Desa untuk pengesahan. Dokumen diperbarui otomatis oleh admin desa.`
-        })]
-      }), (0, x.jsxs)(`div`, {
-        style: {
-          background: `linear-gradient(135deg, #1a4731, #2d6a4f)`,
-          borderRadius: 14,
-          padding: `20px 28px`,
-          marginBottom: 36,
-          display: `flex`,
-          alignItems: `flex-start`,
-          gap: 20,
-          flexWrap: `wrap`
-        },
-        children: [(0, x.jsx)(`div`, {
-          style: {
-            fontSize: 32,
-            flexShrink: 0
-          },
-          children: `☁️`
-        }), (0, x.jsxs)(`div`, {
-          style: {
-            flex: 1
-          },
-          children: [(0, x.jsx)(`div`, {
-            style: {
-              color: `#f0c060`,
-              fontFamily: `Playfair Display, serif`,
-              fontSize: 17,
-              fontWeight: 700,
-              marginBottom: 8
-            },
-            children: `Cara Admin Menambah Dokumen`
-          }), (0, x.jsxs)(`div`, {
-            style: {
-              color: `rgba(253,246,227,0.75)`,
-              fontSize: 13,
-              lineHeight: 1.7
-            },
-            children: [`Upload file ke `, (0, x.jsx)(`strong`, {
+          children: [
+            (0, x.jsx)(`div`, {
+              className: `ornamen`,
               style: {
-                color: `#f0c060`
-              },
-              children: `Folder Google Drive Desa`
-            }),
-              ` yang sudah dikonfigurasi → File langsung otomatis muncul di halaman ini tanpa perlu ubah kode. Beri nama file yang jelas, mis: `,
-              (0, x.jsx)(`code`, {
-                style: {
-                  background: `rgba(201,149,42,0.25)`,
-                  padding: `1px 6px`,
-                  borderRadius: 3,
-                  fontFamily: `DM Mono, monospace`,
-                  fontSize: 11
-                },
-                children: `Formulir SKU 2026.pdf`
-              })
-            ]
-          })]
-        }), u && (0, x.jsx)(`a`, {
-          href: `https://drive.google.com/drive/folders/${ee}`,
-          target: `_blank`,
-          rel: `noopener noreferrer`,
-          style: {
-            flexShrink: 0,
-            background: `#c9952a`,
-            color: `#1a4731`,
-            padding: `10px 20px`,
-            borderRadius: 8,
-            textDecoration: `none`,
-            fontWeight: 700,
-            fontSize: 12,
-            alignSelf: `center`
-          },
-          children: `Buka Folder Drive →`
-        })]
-      }), !u && (0, x.jsxs)(`div`, {
-        style: {
-          background: `white`,
-          border: `2px dashed #c9952a`,
-          borderRadius: 16,
-          padding: `60px 40px`,
-          textAlign: `center`,
-          marginBottom: 32
-        },
-        children: [(0, x.jsx)(`div`, {
-          style: {
-            fontSize: 56,
-            marginBottom: 20
-          },
-          children: `🔧`
-        }), (0, x.jsx)(`h3`, {
-          style: {
-            fontFamily: `Playfair Display, serif`,
-            color: `#1a4731`,
-            fontSize: 22,
-            marginBottom: 12
-          },
-          children: `Konfigurasi Google Drive Diperlukan`
-        }), (0, x.jsx)(`p`, {
-          style: {
-            color: `#5a4a30`,
-            lineHeight: 1.8,
-            marginBottom: 24,
-            maxWidth: 520,
-            margin: `0 auto 24px`
-          },
-          children: `Untuk mengaktifkan fitur unduh surat, ikuti langkah berikut:`
-        }), (0, x.jsx)(`div`, {
-          style: {
-            display: `grid`,
-            gridTemplateColumns: `repeat(3, 1fr)`,
-            gap: 20,
-            maxWidth: 780,
-            margin: `0 auto 32px`,
-            textAlign: `left`
-          },
-          children: [{
-            no: `1`,
-            judul: `Buat Folder Drive`,
-            isi: `Buat folder Google Drive baru, klik kanan → Bagikan → "Siapa saja yang punya tautan" dapat melihat.`
-          }, {
-            no: `2`,
-            judul: `Ambil Folder ID`,
-            isi: `Dari URL folder: drive.google.com/drive/folders/[INI_FOLDER_ID]. Tempel ke variabel GDRIVE_FOLDER_ID.`
-          }, {
-            no: `3`,
-            judul: `Buat API Key`,
-            isi: `Buka console.cloud.google.com → Aktifkan Google Drive API → Credentials → Create API Key → batasi ke Drive API.`
-          }].map(e => (0, x.jsxs)(`div`, {
-            style: {
-              background: `#fdf6e3`,
-              border: `1px solid #e8d5a3`,
-              borderRadius: 12,
-              padding: `20px`
-            },
-            children: [(0, x.jsx)(`div`, {
-              style: {
-                width: 28,
-                height: 28,
-                borderRadius: `50%`,
-                background: `#1a4731`,
-                color: `#f0c060`,
+                color: `#c9952a`,
+                fontSize: 12,
+                letterSpacing: `0.18em`,
+                textTransform: `uppercase`,
                 fontFamily: `DM Mono, monospace`,
-                fontSize: 13,
-                fontWeight: 700,
-                display: `flex`,
-                alignItems: `center`,
-                justifyContent: `center`,
-                marginBottom: 10
+                marginBottom: 16
               },
-              children: e.no
-            }), (0, x.jsx)(`div`, {
+              children: `Administrasi Digital`
+            }),
+            (0, x.jsx)(`h2`, {
               style: {
-                fontWeight: 700,
+                fontFamily: `Playfair Display, serif`,
+                fontSize: `clamp(32px, 5vw, 52px)`,
                 color: `#1a4731`,
-                marginBottom: 6,
-                fontSize: 14
+                fontWeight: 700,
+                marginBottom: 16
               },
-              children: e.judul
-            }), (0, x.jsx)(`div`, {
+              children: `Unduh Surat & Formulir`
+            }),
+            (0, x.jsx)(`p`, {
               style: {
                 color: `#5a4a30`,
-                fontSize: 12,
-                lineHeight: 1.6
+                fontSize: 15,
+                maxWidth: 560,
+                margin: `0 auto`,
+                lineHeight: 1.7
               },
-              children: e.isi
-            })]
-          }, e.no))
-        }), (0, x.jsxs)(`div`, {
-          style: {
-            background: `#f5e6c8`,
-            border: `1px solid #e8d5a3`,
-            borderRadius: 10,
-            padding: `16px 24px`,
-            display: `inline-block`,
-            textAlign: `left`,
-            fontFamily: `DM Mono, monospace`,
-            fontSize: 12,
-            color: `#5a4a30`,
-            lineHeight: 1.8
-          },
-          children: [(0, x.jsx)(`div`, {
-            children: `// Di bagian atas src/App.tsx:`
-          }), (0, x.jsxs)(`div`, {
-            children: [`const GDRIVE_FOLDER_ID = `, (0, x.jsx)(`strong`, {
-              style: {
-                color: `#c9952a`
-              },
-              children: `'abc123...'`
-            })]
-          }), (0, x.jsxs)(`div`, {
-            children: [`const GDRIVE_API_KEY = `, (0, x.jsx)(`strong`, {
-              style: {
-                color: `#c9952a`
-              },
-              children: `'AIzaSy...'`
-            })]
-          })]
-        })]
-      }), u && n && (0, x.jsxs)(`div`, {
-        style: {
-          textAlign: `center`,
-          padding: `60px 0`
-        },
-        children: [(0, x.jsx)(`div`, {
-          style: {
-            fontSize: 40,
-            marginBottom: 16,
-            animation: `spin 1s linear infinite`,
-            display: `inline-block`
-          },
-          children: `⟳`
-        }), (0, x.jsx)(`div`, {
-          style: {
-            color: `#5a4a30`,
-            fontFamily: `DM Mono, monospace`,
-            fontSize: 13
-          },
-          children: `Memuat dokumen dari Google Drive...`
-        })]
-      }), u && i && (0, x.jsxs)(`div`, {
-        style: {
-          background: `#fff5f5`,
-          border: `1px solid #fca5a5`,
-          borderRadius: 12,
-          padding: `20px 24px`,
-          marginBottom: 24,
-          color: `#c0392b`,
-          fontSize: 14,
-          display: `flex`,
-          gap: 12,
-          alignItems: `flex-start`
-        },
-        children: [(0, x.jsx)(`span`, {
-          style: {
-            fontSize: 20
-          },
-          children: `⚠️`
-        }), (0, x.jsx)(`span`, {
-          children: i
-        })]
-      }), u && !n && !i && (0, x.jsxs)(x.Fragment, {
-        children: [(0, x.jsxs)(`div`, {
+              children: `Dokumen & formulir tersedia secara digital. Unduh, isi, dan bawa ke Kantor Desa untuk pengesahan.`
+            })
+          ]
+        }),
+        (0, x.jsxs)(`div`, {
           style: {
             display: `flex`,
             gap: 16,
@@ -11953,63 +12379,89 @@ function _e() {
             flexWrap: `wrap`,
             alignItems: `center`
           },
-          children: [(0, x.jsxs)(`div`, {
-            style: {
-              flex: 1,
-              minWidth: 220,
-              position: `relative`
-            },
-            children: [(0, x.jsx)(`span`, {
+          children: [
+            (0, x.jsxs)(`div`, {
               style: {
-                position: `absolute`,
-                left: 14,
-                top: `50%`,
-                transform: `translateY(-50%)`,
-                fontSize: 16
+                flex: 1,
+                minWidth: 220,
+                position: `relative`
               },
-              children: `🔍`
-            }), (0, x.jsx)(`input`, {
-              type: `text`,
-              placeholder: `Cari surat atau formulir...`,
-              value: c,
-              onChange: e => l(e.target.value),
+              children: [
+                (0, x.jsx)(`span`, {
+                  style: {
+                    position: `absolute`,
+                    left: 14,
+                    top: `50%`,
+                    transform: `translateY(-50%)`,
+                    fontSize: 16
+                  },
+                  children: `🔍`
+                }),
+                (0, x.jsx)(`input`, {
+                  type: `text`,
+                  placeholder: `Cari surat atau formulir...`,
+                  value: c,
+                  onChange: evt => l(evt.target.value),
+                  style: {
+                    width: `100%`,
+                    padding: `12px 16px 12px 42px`,
+                    border: `1.5px solid #e8d5a3`,
+                    borderRadius: 10,
+                    fontSize: 14,
+                    fontFamily: `Plus Jakarta Sans, sans-serif`,
+                    outline: `none`,
+                    background: `white`,
+                    color: `#1c1a14`
+                  }
+                })
+              ]
+            }),
+            (0, x.jsx)(`a`, {
+              href: `https://drive.google.com/drive/folders/${folderId}`,
+              target: `_blank`,
+              rel: `noopener noreferrer`,
               style: {
-                width: `100%`,
-                padding: `12px 16px 12px 42px`,
-                border: `1.5px solid #e8d5a3`,
+                display: `inline-flex`,
+                alignItems: `center`,
+                gap: 6,
+                padding: `11px 18px`,
+                background: `#1a4731`,
+                color: `#f0c060`,
                 borderRadius: 10,
-                fontSize: 14,
+                textDecoration: `none`,
+                fontWeight: 700,
+                fontSize: 13,
                 fontFamily: `Plus Jakarta Sans, sans-serif`,
-                outline: `none`,
-                background: `white`,
-                color: `#1c1a14`
-              }
-            })]
-          }), (0, x.jsx)(`div`, {
-            style: {
-              display: `flex`,
-              gap: 8,
-              flexWrap: `wrap`
-            },
-            children: he.map(e => (0, x.jsx)(`button`, {
-              onClick: () => s(e),
-              style: {
-                padding: `9px 16px`,
-                borderRadius: 100,
-                border: `none`,
-                cursor: `pointer`,
-                background: o === e ? `#1a4731` : `white`,
-                color: o === e ? `#f0c060` : `#5a4a30`,
-                fontWeight: 600,
-                fontSize: 12,
-                fontFamily: `Plus Jakarta Sans, sans-serif`,
-                border: o === e ? `1.5px solid #1a4731` : `1.5px solid #e8d5a3`,
-                transition: `all 0.15s`
+                boxShadow: `0 4px 12px rgba(26,71,49,0.15)`
               },
-              children: e
-            }, e))
-          })]
-        }), (0, x.jsxs)(`div`, {
+              children: `📂 Buka / Upload Surat (Drive) →`
+            }),
+            (0, x.jsx)(`div`, {
+              style: {
+                display: `flex`,
+                gap: 8,
+                flexWrap: `wrap`
+              },
+              children: he.map(cat => (0, x.jsx)(`button`, {
+                onClick: () => s(cat),
+                style: {
+                  padding: `9px 16px`,
+                  borderRadius: 100,
+                  border: o === cat ? `1.5px solid #1a4731` : `1.5px solid #e8d5a3`,
+                  cursor: `pointer`,
+                  background: o === cat ? `#1a4731` : `white`,
+                  color: o === cat ? `#f0c060` : `#5a4a30`,
+                  fontWeight: 600,
+                  fontSize: 12,
+                  fontFamily: `Plus Jakarta Sans, sans-serif`,
+                  transition: `all 0.15s`
+                },
+                children: cat
+              }, cat))
+            })
+          ]
+        }),
+        (0, x.jsxs)(`div`, {
           style: {
             color: `#8b5e3c`,
             fontSize: 12,
@@ -12017,40 +12469,36 @@ function _e() {
             marginBottom: 20
           },
           children: [`Menampilkan `, d.length, ` dari `, e.length, ` dokumen`]
-        }), d.length === 0 ? (0, x.jsxs)(`div`, {
+        }),
+        d.length === 0 ? (0, x.jsxs)(`div`, {
           style: {
             textAlign: `center`,
             padding: `48px 0`,
             color: `#8b5e3c`
           },
-          children: [(0, x.jsx)(`div`, {
-            style: {
-              fontSize: 40,
-              marginBottom: 12
-            },
-            children: `📭`
-          }), (0, x.jsx)(`div`, {
-            style: {
-              fontFamily: `Playfair Display, serif`,
-              fontSize: 18,
-              marginBottom: 8
-            },
-            children: `Tidak ada dokumen ditemukan`
-          }), (0, x.jsx)(`div`, {
-            style: {
-              fontSize: 13
-            },
-            children: `Coba ubah kata kunci atau kategori pencarian.`
-          })]
+          children: [
+            (0, x.jsx)(`div`, {
+              style: { fontSize: 40, marginBottom: 12 },
+              children: `📭`
+            }),
+            (0, x.jsx)(`div`, {
+              style: { fontFamily: `Playfair Display, serif`, fontSize: 18, marginBottom: 8 },
+              children: `Tidak ada dokumen ditemukan`
+            }),
+            (0, x.jsx)(`div`, {
+              style: { fontSize: 13 },
+              children: `Coba ubah kata kunci atau kategori pencarian.`
+            })
+          ]
         }) : (0, x.jsx)(`div`, {
           style: {
             display: `grid`,
             gridTemplateColumns: `repeat(auto-fill, minmax(320px, 1fr))`,
             gap: 16
           },
-          children: d.map(e => {
-            let t = pe(e.mimeType),
-              n = ge(e.name);
+          children: d.map(doc => {
+            let meta = pe(doc.mimeType),
+              catName = ge(doc.name);
             return (0, x.jsxs)(`div`, {
               style: {
                 background: `white`,
@@ -12063,144 +12511,141 @@ function _e() {
                 boxShadow: `0 2px 12px rgba(26,71,49,0.06)`,
                 transition: `box-shadow 0.2s, transform 0.2s`
               },
-              onMouseEnter: e => {
-                e.currentTarget.style.boxShadow = `0 8px 24px rgba(26,71,49,0.14)`, e
-                  .currentTarget.style.transform = `translateY(-2px)`
+              onMouseEnter: evt => {
+                evt.currentTarget.style.boxShadow = `0 8px 24px rgba(26,71,49,0.14)`;
+                evt.currentTarget.style.transform = `translateY(-2px)`;
               },
-              onMouseLeave: e => {
-                e.currentTarget.style.boxShadow = `0 2px 12px rgba(26,71,49,0.06)`, e
-                  .currentTarget.style.transform = ``
+              onMouseLeave: evt => {
+                evt.currentTarget.style.boxShadow = `0 2px 12px rgba(26,71,49,0.06)`;
+                evt.currentTarget.style.transform = ``;
               },
-              children: [(0, x.jsx)(`div`, {
-                style: {
-                  width: 48,
-                  height: 48,
-                  borderRadius: 10,
-                  flexShrink: 0,
-                  background: t.warna + `18`,
-                  display: `flex`,
-                  alignItems: `center`,
-                  justifyContent: `center`,
-                  fontSize: 22,
-                  border: `1px solid ${t.warna}30`
-                },
-                children: t.ikon
-              }), (0, x.jsxs)(`div`, {
-                style: {
-                  flex: 1,
-                  minWidth: 0
-                },
-                children: [(0, x.jsx)(`div`, {
+              children: [
+                (0, x.jsx)(`div`, {
                   style: {
-                    fontWeight: 600,
-                    color: `#1a4731`,
-                    fontSize: 14,
-                    marginBottom: 4,
-                    lineHeight: 1.35,
-                    wordBreak: `break-word`
-                  },
-                  children: e.name
-                }), (0, x.jsxs)(`div`, {
-                  style: {
+                    width: 48,
+                    height: 48,
+                    borderRadius: 10,
+                    flexShrink: 0,
+                    background: meta.warna + `18`,
                     display: `flex`,
-                    gap: 8,
-                    marginBottom: 12,
-                    flexWrap: `wrap`
+                    alignItems: `center`,
+                    justifyContent: `center`,
+                    fontSize: 22,
+                    border: `1px solid ${meta.warna}30`
                   },
-                  children: [(0, x.jsx)(`span`, {
-                    style: {
-                      fontSize: 10,
-                      fontFamily: `DM Mono, monospace`,
-                      background: t.warna + `18`,
-                      color: t.warna,
-                      padding: `2px 8px`,
-                      borderRadius: 100,
-                      fontWeight: 600
-                    },
-                    children: t.label
-                  }), (0, x.jsx)(`span`, {
-                    style: {
-                      fontSize: 10,
-                      fontFamily: `DM Mono, monospace`,
-                      background: `#f5e6c8`,
-                      color: `#8b5e3c`,
-                      padding: `2px 8px`,
-                      borderRadius: 100
-                    },
-                    children: n
-                  })]
-                }), (0, x.jsxs)(`div`, {
-                  style: {
-                    fontSize: 11,
-                    color: `#8b5e3c`,
-                    fontFamily: `DM Mono, monospace`,
-                    marginBottom: 14
-                  },
-                  children: [e.size ? me(e.size) + ` · ` : ``, D(e
-                    .modifiedTime)]
-                }), (0, x.jsxs)(`div`, {
-                  style: {
-                    display: `flex`,
-                    gap: 8
-                  },
-                  children: [(0, x.jsx)(`a`, {
-                    href: e.webViewLink,
-                    target: `_blank`,
-                    rel: `noopener noreferrer`,
-                    style: {
-                      flex: 1,
-                      textAlign: `center`,
-                      padding: `8px 12px`,
-                      borderRadius: 8,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      border: `1.5px solid #1a4731`,
-                      color: `#1a4731`,
-                      textDecoration: `none`,
-                      transition: `all 0.15s`
-                    },
-                    onMouseEnter: e => {
-                      e.currentTarget.style.background = `#1a4731`, e
-                        .currentTarget.style.color = `#f0c060`
-                    },
-                    onMouseLeave: e => {
-                      e.currentTarget.style.background =
-                        `transparent`, e.currentTarget.style.color =
-                        `#1a4731`
-                    },
-                    children: `👁 Lihat`
-                  }), e.webContentLink && (0, x.jsx)(`a`, {
-                    href: e.webContentLink,
-                    style: {
-                      flex: 1,
-                      textAlign: `center`,
-                      padding: `8px 12px`,
-                      borderRadius: 8,
-                      fontSize: 12,
-                      fontWeight: 600,
-                      background: `linear-gradient(135deg, #c9952a, #f0c060)`,
-                      color: `#1a4731`,
-                      textDecoration: `none`,
-                      transition: `opacity 0.15s`
-                    },
-                    onMouseEnter: e => e.currentTarget.style.opacity =
-                      `0.85`,
-                    onMouseLeave: e => e.currentTarget.style.opacity =
-                      `1`,
-                    children: `⬇ Unduh`
-                  })]
-                })]
-              })]
-            }, e.id)
+                  children: meta.ikon
+                }),
+                (0, x.jsxs)(`div`, {
+                  style: { flex: 1, minWidth: 0 },
+                  children: [
+                    (0, x.jsx)(`div`, {
+                      style: {
+                        fontWeight: 600,
+                        color: `#1a4731`,
+                        fontSize: 14,
+                        marginBottom: 4,
+                        lineHeight: 1.35,
+                        wordBreak: `break-word`
+                      },
+                      children: doc.name
+                    }),
+                    (0, x.jsxs)(`div`, {
+                      style: { display: `flex`, gap: 8, marginBottom: 12, flexWrap: `wrap` },
+                      children: [
+                        (0, x.jsx)(`span`, {
+                          style: {
+                            fontSize: 10,
+                            fontFamily: `DM Mono, monospace`,
+                            background: meta.warna + `18`,
+                            color: meta.warna,
+                            padding: `2px 8px`,
+                            borderRadius: 100,
+                            fontWeight: 600
+                          },
+                          children: meta.label
+                        }),
+                        (0, x.jsx)(`span`, {
+                          style: {
+                            fontSize: 10,
+                            fontFamily: `DM Mono, monospace`,
+                            background: `#f5e6c8`,
+                            color: `#8b5e3c`,
+                            padding: `2px 8px`,
+                            borderRadius: 100
+                          },
+                          children: catName
+                        })
+                      ]
+                    }),
+                    (0, x.jsxs)(`div`, {
+                      style: {
+                        fontSize: 11,
+                        color: `#8b5e3c`,
+                        fontFamily: `DM Mono, monospace`,
+                        marginBottom: 14
+                      },
+                      children: [doc.size ? me(doc.size) + ` · ` : ``, D(doc.modifiedTime)]
+                    }),
+                    (0, x.jsxs)(`div`, {
+                      style: { display: `flex`, gap: 8 },
+                      children: [
+                        (0, x.jsx)(`a`, {
+                          href: doc.webViewLink,
+                          target: `_blank`,
+                          rel: `noopener noreferrer`,
+                          style: {
+                            flex: 1,
+                            textAlign: `center`,
+                            padding: `8px 12px`,
+                            borderRadius: 8,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            border: `1.5px solid #1a4731`,
+                            color: `#1a4731`,
+                            textDecoration: `none`,
+                            transition: `all 0.15s`
+                          },
+                          onMouseEnter: evt => {
+                            evt.currentTarget.style.background = `#1a4731`;
+                            evt.currentTarget.style.color = `#f0c060`;
+                          },
+                          onMouseLeave: evt => {
+                            evt.currentTarget.style.background = `transparent`;
+                            evt.currentTarget.style.color = `#1a4731`;
+                          },
+                          children: `👁 Lihat`
+                        }),
+                        doc.webContentLink && (0, x.jsx)(`a`, {
+                          href: doc.webContentLink,
+                          target: `_blank`,
+                          rel: `noopener noreferrer`,
+                          style: {
+                            flex: 1,
+                            textAlign: `center`,
+                            padding: `8px 12px`,
+                            borderRadius: 8,
+                            fontSize: 12,
+                            fontWeight: 600,
+                            background: `linear-gradient(135deg, #c9952a, #f0c060)`,
+                            color: `#1a4731`,
+                            textDecoration: `none`,
+                            transition: `opacity 0.15s`
+                          },
+                          onMouseEnter: evt => evt.currentTarget.style.opacity = `0.85`,
+                          onMouseLeave: evt => evt.currentTarget.style.opacity = `1`,
+                          children: `⬇ Unduh`
+                        })
+                      ]
+                    })
+                  ]
+                })
+              ]
+            }, doc.id);
           })
-        })]
-      })]
-    }), (0, x.jsx)(`style`, {
-      children: `
-        @keyframes spin { to { transform: rotate(360deg); } }
-      `
-    })]
-  })
+        })
+      ]
+    })
+  });
 }
 
 function ve() {
@@ -12276,7 +12721,7 @@ function ye() {
             }, {
               ikon: `🕐`,
               label: `Jam Layanan`,
-              nilai: `Senin–Jumat, 08.00–15.00 WIB`
+              nilai: `Senin–Jumat: 08.00–15.00 WIB | Sabtu: 08.00–12.00 WIB | Minggu: Libur`
             }].map((e, t) => (0, x.jsxs)(`div`, {
               style: {
                 display: `flex`,
