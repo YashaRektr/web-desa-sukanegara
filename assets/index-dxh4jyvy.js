@@ -9927,7 +9927,7 @@ Error generating stack: ` + e.message + "\n" + e.stack
   GDRIVE_GALERI_FOLDER_ID = `1eSlgdubHZmH-nyYcR3VpBEeTzz2cpqW4`,
   GDRIVE_PERANGKAT_FOLDER_ID = `10Om41wIBdsarmksMlwEgpF4t8clPBwqS`,
   C =
-    `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31791.82!2d105.3441!3d-5.3971!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e40c0a3a3d37f4d%3A0x9a5a3c2b4c4f6c00!2sTanjung%20Bintang%2C%20Lampung%20Selatan!5e0!3m2!1sid!2sid!4v1720000000000`,
+    `https://maps.google.com/maps?q=Sukanegara%2C%20Kec.%20Tanjung%20Bintang%2C%20Kabupaten%20Lampung%20Selatan&t=&z=14&ie=UTF8&iwloc=&output=embed`,
   te = [{
     label: `Beranda`,
     href: `#beranda`
@@ -10792,7 +10792,7 @@ function T() {
       }), (0, x.jsx)(`div`, {
         style: {
           display: `grid`,
-          gridTemplateColumns: `repeat(3, 1fr)`,
+          gridTemplateColumns: `repeat(auto-fit, minmax(220px, 1fr))`,
           gap: 20,
           marginBottom: 48
         },
@@ -11013,7 +11013,7 @@ function E() {
       }), (0, x.jsx)(`div`, {
         style: {
           display: `grid`,
-          gridTemplateColumns: `repeat(3, 1fr)`,
+          gridTemplateColumns: `repeat(auto-fit, minmax(240px, 1fr))`,
           gap: 24
         },
         children: loading ? (0, x.jsxs)(`div`, {
@@ -11506,7 +11506,7 @@ function de() {
       }) : (0, x.jsx)(`div`, {
         style: {
           display: `grid`,
-          gridTemplateColumns: `repeat(3, 1fr)`,
+          gridTemplateColumns: `repeat(auto-fit, minmax(250px, 1fr))`,
           gap: 24
         },
         children: perangkat.map((e, t) => (0, x.jsxs)(`div`, {
@@ -11637,7 +11637,7 @@ function de() {
         }) : (0, x.jsx)(`div`, {
           style: {
             display: `grid`,
-            gridTemplateColumns: `repeat(6, 1fr)`,
+            gridTemplateColumns: `repeat(auto-fit, minmax(140px, 1fr))`,
             gap: 16
           },
           children: kadusList.map((e, t) => (0, x.jsxs)(`div`, {
@@ -11802,7 +11802,7 @@ function de() {
               pkkInti.length > 0 ? (0, x.jsx)(`div`, {
                 style: {
                   display: `grid`,
-                  gridTemplateColumns: `repeat(5, 1fr)`,
+                  gridTemplateColumns: `repeat(auto-fit, minmax(130px, 1fr))`,
                   gap: 16,
                   marginBottom: 32
                 },
@@ -11875,7 +11875,7 @@ function de() {
               pkkPokja.length > 0 ? (0, x.jsx)(`div`, {
                 style: {
                   display: `grid`,
-                  gridTemplateColumns: `repeat(4, 1fr)`,
+                  gridTemplateColumns: `repeat(auto-fit, minmax(240px, 1fr))`,
                   gap: 16
                 },
                 children: pkkPokja.map((pok, idx) => (0, x.jsxs)(`div`, {
@@ -12201,7 +12201,7 @@ function O() {
             referrerPolicy: `no-referrer-when-downgrade`,
             title: `Peta Desa Sukanegara - Google Maps`
           }) : (0, x.jsx)(`iframe`, {
-            src: `https://www.openstreetmap.org/export/embed.html?bbox=105.29%2C-5.44%2C105.40%2C-5.35&layer=mapnik&marker=-5.3971%2C105.3441`,
+            src: `https://www.openstreetmap.org/export/embed.html?bbox=105.34%2C-5.39%2C105.41%2C-5.33&layer=mapnik&marker=-5.3592%2C105.3785`,
             width: `100%`,
             height: `480`,
             style: {
@@ -12228,7 +12228,7 @@ function O() {
       }), (0, x.jsx)(`div`, {
         style: {
           display: `grid`,
-          gridTemplateColumns: `repeat(4, 1fr)`,
+          gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))`,
           gap: 16,
           marginTop: 24
         },
@@ -12974,7 +12974,7 @@ function be() {
       children: [(0, x.jsxs)(`div`, {
         style: {
           display: `grid`,
-          gridTemplateColumns: `2fr 1fr 1fr`,
+          gridTemplateColumns: `repeat(auto-fit, minmax(200px, 1fr))`,
           gap: 48,
           marginBottom: 40
         },
