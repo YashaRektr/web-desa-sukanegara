@@ -10022,31 +10022,31 @@ Error generating stack: ` + e.message + "\n" + e.stack
   ie = [{
     nama: `Heri Tamtomo S.So.s`,
     jabatan: `Kepala Desa`,
-    foto: `https://i.ibb.co.com/dskChkk3/Pak-Heri-Tamtomo.jpg`
+    foto: ``
   }, {
     nama: `Sunarna`,
     jabatan: `Sekretaris Desa`,
-    foto: `https://i.ibb.co.com/R4SbSnMM/fotosekdes.webp`
+    foto: ``
   }, {
     nama: `Buang Riyanto`,
     jabatan: `Kaur Keuangan`,
-    foto: `https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&h=200&fit=crop&auto=format&facepad=3&faces=1`
+    foto: ``
   }, {
     nama: `Wahyudi`,
     jabatan: `Kaur Perencanaan`,
-    foto: `https://images.unsplash.com/photo-1494790108755-2616b612b977?w=200&h=200&fit=crop&auto=format&facepad=3&faces=1`
+    foto: ``
   }, {
     nama: `Anwar Nasikin`,
     jabatan: `Kasi Pemerintahan`,
-    foto: `https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&h=200&fit=crop&auto=format&facepad=3&faces=1`
+    foto: ``
   }, {
     nama: `Samia Maria`,
     jabatan: `Kasi Pelayanan`,
-    foto: `https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=200&h=200&fit=crop&auto=format&facepad=3&faces=1`
+    foto: ``
   }, {
     nama: `Tara Amalia`,
     jabatan: `Kasi Kesejahteraan`,
-    foto: `https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&h=200&fit=crop&auto=format&facepad=3&faces=1`
+    foto: ``
   }],
   ae = [{
     nama: `Sudarso`,
@@ -11244,7 +11244,7 @@ function de() {
             if (fileLower.includes("readme") || fileLower.includes("panduan") || fileLower.includes("guide")) return;
 
             let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
-            let gdriveUrl = (file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+/, "=s500") : "") || `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
+            let gdriveUrl = `https://lh3.googleusercontent.com/d/${file.id}`;
 
             let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
             let pos = parts[0] || "";
@@ -11359,7 +11359,7 @@ function de() {
             if (fileLower.includes("readme") || fileLower.includes("panduan") || fileLower.includes("guide")) return;
 
             let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
-            let gdriveUrl = (file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+/, "=s500") : "") || `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
+            let gdriveUrl = `https://lh3.googleusercontent.com/d/${file.id}`;
 
             let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
             let pos = parts[0] || "";
@@ -11539,8 +11539,8 @@ function de() {
               alt: e.nama,
               onError: evt => {
                 let currentSrc = evt.currentTarget.src || "";
-                if (e.fileId && !currentSrc.includes("googleusercontent.com/d/")) {
-                  evt.currentTarget.src = `https://lh3.googleusercontent.com/d/${e.fileId}`;
+                if (e.fileId && !currentSrc.includes("drive.google.com/thumbnail")) {
+                  evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${e.fileId}&sz=w500`;
                 } else {
                   evt.currentTarget.style.display = `none`;
                   if (evt.currentTarget.parentElement) {
@@ -11680,8 +11680,8 @@ function de() {
                 alt: e.nama,
                 onError: evt => {
                   let currentSrc = evt.currentTarget.src || "";
-                  if (e.fileId && !currentSrc.includes("googleusercontent.com/d/")) {
-                    evt.currentTarget.src = `https://lh3.googleusercontent.com/d/${e.fileId}`;
+                  if (e.fileId && !currentSrc.includes("drive.google.com/thumbnail")) {
+                    evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${e.fileId}&sz=w500`;
                   } else {
                     evt.currentTarget.style.display = `none`;
                     if (evt.currentTarget.parentElement) {
@@ -11846,8 +11846,8 @@ function de() {
                         alt: item.nama,
                         onError: evt => {
                           let currentSrc = evt.currentTarget.src || "";
-                          if (item.fileId && !currentSrc.includes("googleusercontent.com/d/")) {
-                            evt.currentTarget.src = `https://lh3.googleusercontent.com/d/${item.fileId}`;
+                          if (item.fileId && !currentSrc.includes("drive.google.com/thumbnail")) {
+                            evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${item.fileId}&sz=w500`;
                           } else {
                             evt.currentTarget.style.display = `none`;
                             if (evt.currentTarget.parentElement) {
