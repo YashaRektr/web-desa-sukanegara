@@ -11227,7 +11227,7 @@ function de() {
 
     // 1. Fetch Perangkat Desa & Kepala Dusun Folder
     if (GDRIVE_PERANGKAT_FOLDER_ID && GDRIVE_PERANGKAT_FOLDER_ID !== "GANTI_DENGAN_FOLDER_ID_PERANGKAT") {
-      let urlPerangkat = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_PERANGKAT_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType)&key=${S}`;
+      let urlPerangkat = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_PERANGKAT_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType,thumbnailLink)&key=${S}`;
       fetch(urlPerangkat)
         .then(res => res.ok ? res.json() : null)
         .then(data => {
@@ -11244,7 +11244,7 @@ function de() {
             if (fileLower.includes("readme") || fileLower.includes("panduan") || fileLower.includes("guide")) return;
 
             let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
-            let gdriveUrl = `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
+            let gdriveUrl = (file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+/, "=s500") : "") || `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
 
             let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
             let pos = parts[0] || "";
@@ -11319,7 +11319,7 @@ function de() {
 
     // 2. Fetch Dedicated PKK Folder
     if (GDRIVE_PKK_FOLDER_ID) {
-      let urlPkk = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_PKK_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType)&key=${S}`;
+      let urlPkk = `https://www.googleapis.com/drive/v3/files?q='${GDRIVE_PKK_FOLDER_ID}'+in+parents+and+trashed=false&fields=files(id,name,mimeType,thumbnailLink)&key=${S}`;
       fetch(urlPkk)
         .then(res => res.ok ? res.json() : null)
         .then(data => {
@@ -11359,7 +11359,7 @@ function de() {
             if (fileLower.includes("readme") || fileLower.includes("panduan") || fileLower.includes("guide")) return;
 
             let cleanName = file.name.replace(/\.(txt|jpg|jpeg|png|webp|gif)$/i, "").trim();
-            let gdriveUrl = `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
+            let gdriveUrl = (file.thumbnailLink ? file.thumbnailLink.replace(/=s\d+/, "=s500") : "") || `https://drive.google.com/thumbnail?id=${file.id}&sz=w500`;
 
             let parts = cleanName.split(/[-_]/).map(s => s.trim()).filter(Boolean);
             let pos = parts[0] || "";
@@ -11538,9 +11538,14 @@ function de() {
               src: e.foto,
               alt: e.nama,
               onError: evt => {
-                evt.currentTarget.style.display = `none`;
-                if (evt.currentTarget.parentElement) {
-                  evt.currentTarget.parentElement.innerText = `👤`;
+                let currentSrc = evt.currentTarget.src || "";
+                if (e.fileId && !currentSrc.includes("googleusercontent.com/d/")) {
+                  evt.currentTarget.src = `https://lh3.googleusercontent.com/d/${e.fileId}`;
+                } else {
+                  evt.currentTarget.style.display = `none`;
+                  if (evt.currentTarget.parentElement) {
+                    evt.currentTarget.parentElement.innerText = `👤`;
+                  }
                 }
               },
               style: {
@@ -11674,9 +11679,14 @@ function de() {
                 src: e.foto,
                 alt: e.nama,
                 onError: evt => {
-                  evt.currentTarget.style.display = `none`;
-                  if (evt.currentTarget.parentElement) {
-                    evt.currentTarget.parentElement.innerText = `🏡`;
+                  let currentSrc = evt.currentTarget.src || "";
+                  if (e.fileId && !currentSrc.includes("googleusercontent.com/d/")) {
+                    evt.currentTarget.src = `https://lh3.googleusercontent.com/d/${e.fileId}`;
+                  } else {
+                    evt.currentTarget.style.display = `none`;
+                    if (evt.currentTarget.parentElement) {
+                      evt.currentTarget.parentElement.innerText = `🏡`;
+                    }
                   }
                 },
                 style: {
@@ -11835,9 +11845,14 @@ function de() {
                         src: item.foto,
                         alt: item.nama,
                         onError: evt => {
-                          evt.currentTarget.style.display = `none`;
-                          if (evt.currentTarget.parentElement) {
-                            evt.currentTarget.parentElement.innerText = item.ikon || `🌺`;
+                          let currentSrc = evt.currentTarget.src || "";
+                          if (item.fileId && !currentSrc.includes("googleusercontent.com/d/")) {
+                            evt.currentTarget.src = `https://lh3.googleusercontent.com/d/${item.fileId}`;
+                          } else {
+                            evt.currentTarget.style.display = `none`;
+                            if (evt.currentTarget.parentElement) {
+                              evt.currentTarget.parentElement.innerText = item.ikon || `🌺`;
+                            }
                           }
                         },
                         style: {
