@@ -11538,9 +11538,9 @@ function de() {
               src: e.foto,
               alt: e.nama,
               onError: evt => {
-                if (e.fileId) {
-                  evt.currentTarget.onerror = null;
-                  evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${e.fileId}&sz=w500`;
+                evt.currentTarget.style.display = `none`;
+                if (evt.currentTarget.parentElement) {
+                  evt.currentTarget.parentElement.innerText = `👤`;
                 }
               },
               style: {
@@ -11674,9 +11674,9 @@ function de() {
                 src: e.foto,
                 alt: e.nama,
                 onError: evt => {
-                  if (e.fileId) {
-                    evt.currentTarget.onerror = null;
-                    evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${e.fileId}&sz=w500`;
+                  evt.currentTarget.style.display = `none`;
+                  if (evt.currentTarget.parentElement) {
+                    evt.currentTarget.parentElement.innerText = `🏡`;
                   }
                 },
                 style: {
@@ -11835,9 +11835,9 @@ function de() {
                         src: item.foto,
                         alt: item.nama,
                         onError: evt => {
-                          if (item.fileId) {
-                            evt.currentTarget.onerror = null;
-                            evt.currentTarget.src = `https://drive.google.com/thumbnail?id=${item.fileId}&sz=w500`;
+                          evt.currentTarget.style.display = `none`;
+                          if (evt.currentTarget.parentElement) {
+                            evt.currentTarget.parentElement.innerText = item.ikon || `🌺`;
                           }
                         },
                         style: {
@@ -12713,14 +12713,6 @@ function ye() {
               label: `Alamat`,
               nilai: `Jl. Raya Sukanegara No. 1, Kec. Tanjung Bintang, Kab. Lampung Selatan, Lampung 35361`
             }, {
-              ikon: `📞`,
-              label: `Telepon`,
-              nilai: `(0721) 123-4567`
-            }, {
-              ikon: `✉️`,
-              label: `Email`,
-              nilai: `desa.sukanegara@lampungselatankab.go.id`
-            }, {
               ikon: `🕐`,
               label: `Jam Layanan`,
               nilai: `Senin–Jumat: 08.00–15.00 WIB | Sabtu: 08.00–12.00 WIB | Minggu: Libur`
@@ -12729,7 +12721,7 @@ function ye() {
                 display: `flex`,
                 gap: 16,
                 padding: `16px 0`,
-                borderBottom: t < 3 ? `1px solid #f0e6c8` : `none`
+                borderBottom: t < 1 ? `1px solid #f0e6c8` : `none`
               },
               children: [(0, x.jsx)(`div`, {
                 style: {
@@ -12761,30 +12753,6 @@ function ye() {
                   children: e.nilai
                 })]
               })]
-            }, t))
-          }), (0, x.jsx)(`div`, {
-            style: {
-              display: `flex`,
-              gap: 12
-            },
-            children: [`Facebook`, `Instagram`, `YouTube`].map((e, t) => (0, x.jsx)(`a`, {
-              href: `#`,
-              style: {
-                flex: 1,
-                textAlign: `center`,
-                padding: `12px 8px`,
-                background: `#1a4731`,
-                color: `#f0c060`,
-                borderRadius: 10,
-                textDecoration: `none`,
-                fontSize: 12,
-                fontWeight: 600,
-                fontFamily: `DM Mono, monospace`,
-                transition: `background 0.2s`
-              },
-              onMouseEnter: e => e.currentTarget.style.background = `#c9952a`,
-              onMouseLeave: e => e.currentTarget.style.background = `#1a4731`,
-              children: e
             }, t))
           })]
         }), (0, x.jsxs)(`div`, {
