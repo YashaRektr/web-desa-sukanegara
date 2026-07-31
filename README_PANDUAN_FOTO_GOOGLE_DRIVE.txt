@@ -1,72 +1,111 @@
 ================================================================================
-  PANDUAN PENAMAAN FILE FOTO & DOKUMEN GOOGLE DRIVE - WEB DESA SUKANEGARA
+  PANDUAN LENGKAP & BUKU PETUNJUK OPERASIONAL ADMIN GOOGLE DRIVE
+                    WEBSITE DESA SUKANEGARA
+                (https://desa-sukanegara.my.id)
 ================================================================================
 
-Panduan ini digunakan oleh Admin Desa untuk mengelola konten foto Perangkat Desa,
-Kepala Dusun, Struktur PKK, Galeri Desa, Surat Menyurat, dan Berita langsung via Google Drive.
+Petunjuk ini disusun khusus untuk Admin Desa / Pengelola Konten Desa Sukanegara
+guna mengelola foto Perangkat Desa, Kepala Dusun, Pengurus TP PKK (Pengurus Inti
+& Pokja I - X), Galeri Foto Kegiatan, Surat Menyurat Digital, dan Berita Desa
+secara langsung melalui Google Drive tanpa perlu mengedit kodingan website.
 
---------------------------------------------------------------------------------
-1. PERANGKAT DESA & KEPALA DUSUN (Folder ID: 10Om41wIBdsarmksMlwEgpF4t8clPBwqS)
---------------------------------------------------------------------------------
-Untuk memperbarui foto atau mengganti nama Perangkat Desa & Kepala Dusun:
+================================================================================
+1. DAFTAR LINK FOLDER GOOGLE DRIVE RESMI DESA SUKANEGARA
+================================================================================
 
-Format A - Pencocokan Nama Otomatis (Ganti Foto Orang Yang Sama):
-  Cukup upload foto dengan nama orang tersebut.
-  Contoh:
-  - Pak Heri Tamtomo.jpg
-  - Pak Sunarna.png
-  - Sudarso.jpg (Foto Kadus 1)
+1. PERANGKAT DESA & KEPALA DUSUN:
+   - Folder ID: 10Om41wIBdsarmksMlwEgpF4t8clPBwqS
+   - Link Direct: https://drive.google.com/drive/folders/10Om41wIBdsarmksMlwEgpF4t8clPBwqS
 
-Format B - Pergantian Pejabat / Perangkat Desa / Kadus Baru:
-  Gunakan format: [Jabatan] - [Nama Lengkap]
-  Contoh Perangkat Desa:
-  - Kepala Desa - Heri Tamtomo S.Sos.jpg
-  - Sekretaris Desa - Sunarna.jpg
-  - Kaur Keuangan - Buang Riyanto.jpg
-  - Kaur Perencanaan - Wahyudi.jpg
-  - Kasi Pemerintahan - Anwar Nasikin.jpg
-  - Kasi Pelayanan - Samia Maria.jpg
-  - Kasi Kesejahteraan - Tara Amalia.jpg
+2. STRUKTUR TP PKK DESA SUKANEGARA (FOLDER KHUSUS PKK):
+   - Folder ID: 1SS-tgp0PwUe3WjQ5BUswb-fSV6v_KYpz
+   - Link Direct: https://drive.google.com/drive/folders/1SS-tgp0PwUe3WjQ5BUswb-fSV6v_KYpz
 
-  Contoh Kepala Dusun:
-  - Kadus 1 - Sudarso.jpg
-  - Kadus 2 - Sarno.jpg
-  - Kadus 3 - Samsuri.jpg
-  - Kadus 4 - Djumiran.jpg
-  - Kadus 5 - Sumardi.jpg
-  - Kadus 6 - Prihatin Yudhono.jpg
+3. GALERI FOTO DESA:
+   - Folder ID: 1eSlgdubHZmH-nyYcR3VpBEeTzz2cpqW4
+   - Link Direct: https://drive.google.com/drive/folders/1eSlgdubHZmH-nyYcR3VpBEeTzz2cpqW4
 
-CATATAN PENTING KEPALA DUSUN:
-* Penulisan "Kadus 1", "Kadus I", "Kepala Dusun 1", dan "Kepala Dusun I"
-  dianggap SAMA PERSIS oleh sistem website dan akan otomatis mengenali dusun tersebut.
+4. SURAT MENYURAT DIGITAL & FORMULIR:
+   - Folder ID: 1HoyodhCKPisgj1X--3hH3wBxVMT9BnjU
+   - Link Direct: https://drive.google.com/drive/folders/1HoyodhCKPisgj1X--3hH3wBxVMT9BnjU
 
---------------------------------------------------------------------------------
-2. STRUKTUR TP PKK DESA SUKANEGARA (Folder ID Khusus: 1SS-tgp0PwUe3WjQ5BUswb-fSV6v_KYpz)
---------------------------------------------------------------------------------
-Setiap file foto mewakili 1 ORANG (1 FOTO = 1 ORANG).
+5. BERITA & LIPUTAN KEGIATAN DESA:
+   - Folder ID: 1f2jx3TapKrqGl-SlAhuKIo4Juf-OxM17
+   - Link Direct: https://drive.google.com/drive/folders/1f2jx3TapKrqGl-SlAhuKIo4Juf-OxM17
 
-A. Format Penamaan Pengurus Inti PKK (1 Foto / Orang):
-   Format: [Jabatan PKK] - [Nama Lengkap]
+================================================================================
+2. PANDUAN FOTO PERANGKAT DESA & KEPALA DUSUN (FOLDER ID: 10Om41wIBdsarmksMlwEgpF4t8clPBwqS)
+================================================================================
+
+Format Penamaan Berkas Foto:
+
+A. Mengganti Foto Pejabat Yang Sama:
+   Jika hanya ingin mengganti foto pejabat yang sudah ada tanpa mengubah jabatannya,
+   cukup unggah foto dengan nama pejabat yang bersangkutan.
    Contoh:
-   - Ketua PKK - Walem S.Kom.I.jpg
+   - Pak Heri Tamtomo.jpg
+   - Pak Sunarna.png
+   - Sudarso.jpg (Foto Kepala Dusun I)
+
+B. Pergantian Pejabat / Perangkat Desa Baru:
+   Gunakan format baku: [Jabatan] - [Nama Lengkap].[ekstensi]
+
+   Contoh Perangkat Desa:
+   - Kepala Desa - Heri Tamtomo S.Sos.jpg
+   - Sekretaris Desa - Sunarna.jpg
+   - Kaur Keuangan - Buang Riyanto.jpg
+   - Kaur Perencanaan - Wahyudi.jpg
+   - Kasi Pemerintahan - Anwar Nasikin.jpg
+   - Kasi Pelayanan - Samia Maria.jpg
+   - Kasi Kesejahteraan - Tara Amalia.jpg
+   - Kaur Umum - Budi Santoso.jpg (Jabatan baru otomatis membuat kartu baru)
+
+   Contoh Kepala Dusun:
+   - Kadus 1 - Sudarso.jpg (Atau "Kepala Dusun 1 - Sudarso.jpg" atau "Kadus I")
+   - Kadus 2 - Sarno.jpg
+   - Kadus 3 - Samsuri.jpg
+   - Kadus 4 - Djumiran.jpg
+   - Kadus 5 - Sumardi.jpg
+   - Kadus 6 - Prihatin Yudhono.jpg
+   - Kadus 7 - Ahmad.jpg (Otomatis membuat kartu Dusun VII jika desa mekar)
+
+CATATAN PENULISAN DUSUN:
+- Penulisan "Kadus 1", "Kadus I", "Kepala Dusun 1", dan "Kepala Dusun I"
+  dianggap SAMA PERSIS oleh sistem website dan otomatis dikenali.
+
+================================================================================
+3. PANDUAN FOTO TP PKK DESA SUKANEGARA (FOLDER KHUSUS ID: 1SS-tgp0PwUe3WjQ5BUswb-fSV6v_KYpz)
+================================================================================
+
+Aturan Utama: 1 FILE FOTO = 1 ORANG PENGURUS.
+
+A. Format Penamaan Pengurus Inti PKK:
+   Format baku: [Jabatan PKK] - [Nama Lengkap].[ekstensi]
+
+   Contoh Pengurus Inti:
    - Pembina PKK - Heri Tamtomo S.Sos.jpg
+   - Ketua PKK - Walem S.Kom.I.jpg (Atau "Ketua TP PKK - Walem S.Kom.I")
    - Penasehat PKK - Asmara S.Pd.jpg
    - Sekretaris PKK - Sutini.jpg
    - Bendahara PKK - Nilawati.jpg
 
-B. Format Penamaan Ketua Pokja (1 Foto / Orang):
-   Format: Ketua Pokja [Nomor Pokja] - [Nama Ketua]
-   Contoh:
-   - Ketua Pokja 1 - Roslaila.jpg (atau Pokja 1 - Ketua - Roslaila.jpg)
+B. Format Penamaan Ketua Pokja (Pokja I - X):
+   Format: Ketua Pokja [Nomor] - [Nama Ketua].[ekstensi]
+   Atau:   Pokja [Nomor] - Ketua - [Nama Ketua].[ekstensi]
+
+   Contoh Ketua Pokja:
+   - Ketua Pokja 1 - Roslaila.jpg
    - Ketua Pokja 2 - Yuti Alistuti.jpg
    - Ketua Pokja 3 - Marminah.jpg
    - Ketua Pokja 4 - Hali Desna.jpg
 
    * Note: Penulisan "Pokja 1" dan "Pokja I" dianggap SAMA PERSIS.
 
-C. Format Penamaan Anggota Pokja (1 Foto / Orang):
-   Format: Anggota Pokja [Nomor Pokja] - [Nama Anggota]
-   Contoh:
+C. Format Penamaan Anggota Pokja (Jumlah Anggota Bebas):
+   Format: Anggota Pokja [Nomor] - [Nama Anggota].[ekstensi]
+   Atau:   Pokja [Nomor] - Anggota - [Nama Anggota].[ekstensi]
+
+   Contoh Anggota Pokja:
    - Anggota Pokja 1 - Mirdayani.jpg
    - Anggota Pokja 1 - Siti Qomariyah.jpg
    - Anggota Pokja 1 - Cici Kurniasih.jpg
@@ -74,67 +113,78 @@ C. Format Penamaan Anggota Pokja (1 Foto / Orang):
    - Pokja 2 - Anggota - Rita Indriyani.jpg
    - Pokja 2 - Anggota - Afni Defita Sari.jpg
 
---------------------------------------------------------------------------------
-3. OTOMATISASI & FUTURE-PROOFING (PENAMBAHAN / PENGURANGAN JABATAN & DUSUN)
---------------------------------------------------------------------------------
-Sistem website telah dilengkapi kecerdasan buatan dinamis (Future-Proofing):
+================================================================================
+4. PENAMBAHAN PEJABAT / PENGURUS TANPA FOTO (FORMAT FILE TEKS .txt)
+================================================================================
 
-* PENAMBAHAN JABATAN BARU:
-  Jika ada perangkat desa baru (misal: "Kaur Umum - Budi.jpg" atau "Staf Administrasi - Siti.jpg"),
-  sistem otomatis membuatkan kartu jabatan baru tersebut tanpa mengedit kodingan.
+Jika pejabat atau pengurus sudah ada/ditunjuk namun BELUM MEMILIKI FOTO FORMAL,
+Admin Desa dapat menambahkan namanya menggunakan file teks kosong (.txt):
 
-* PENAMBAHAN PERANGKAT / PEJABAT TANPA FOTO:
-  Jika pejabat/perangkat desa sudah ada tapi BELUM MEMILIKI FOTO, cukup upload file teks kosong (.txt):
-  Contoh: "Kaur Umum - Budi.txt" atau "Kadus 4 - Djumiran.txt"
-  Hasil di Website: Kartu akan otomatis dibuat dengan icon avatar "👤", nama lengkap Budi,
-  dan jabatan Kaur Umum. Foto dapat diunggah nanti kapan saja untuk menimpa avatar tersebut.
+1. Buat dokumen teks kosong di Notepad.
+2. Simpan file dengan nama: [Jabatan] - [Nama Lengkap].txt
+   Contoh:
+   - "Kaur Umum - Budi Santoso.txt"
+   - "Kadus 4 - Djumiran.txt"
+   - "Penasehat PKK - Asmara S.Pd.txt"
+3. Unggah file .txt tersebut ke folder Google Drive yang sesuai.
+4. Hasil di Website:
+   Sistem website akan membuatkan kartu secara otomatis dengan Icon Avatar
+   (👤 atau 📜), nama lengkap Budi Santoso, dan jabatan Kaur Umum.
+   Foto asli dapat diunggah nanti kapan saja untuk menimpa avatar tersebut.
 
-* PENAMBAHAN DUSUN BARU:
-  Jika desa dimekarkan menjadi Dusun 7 atau Dusun 8 ("Kadus 7 - Nama.jpg"),
-  sistem otomatis menambahkan kartu Dusun 7, 8 dst.
+================================================================================
+5. PENANGANAN FOTO RUSAK & FILTER DOKUMEN PANDUAN
+================================================================================
 
-* PENAMBAHAN POKJA BARU:
-  Jika ada "Pokja 5 - Nama.jpg", sistem otomatis menambahkan kartu Pokja V.
+- FOTO RUSAK / TIDAK BISA DIMUAT:
+  Jika foto gagal dimuat, sistem website tidak akan pernah menampilkan gambar
+  pecah. Gambar rusak otomatis diganti menjadi Icon Lambang Emas (🎖️, 👑, 📜, ✍️, 💰, 👤).
 
-* PENGHAPUSAN DATA / FOTO:
-  Jika file dihapus dari Google Drive, kartu tersebut otomatis hilang atau
-  beralih ke status "(Sedang Masa Pergantian)".
+- FILTER FILE PANDUAN:
+  File dokumen seperti "README_PANDUAN_FOTO_GOOGLE_DRIVE.txt" atau file yang
+  mengandung kata "README" / "PANDUAN" yang ditaruh di Google Drive akan OTOMATIS
+  DISARING oleh sistem sehingga TIDAK AKAN PERNAH muncul menjadi kartu staf.
 
---------------------------------------------------------------------------------
-4. GALERI DESA (Folder ID: 1eSlgdubHZmH-nyYcR3VpBEeTzz2cpqW4)
---------------------------------------------------------------------------------
-Untuk menambahkan foto kegiatan / keindahan desa ke Galeri:
+================================================================================
+6. GALERI FOTO DESA (FOLDER ID: 1eSlgdubHZmH-nyYcR3VpBEeTzz2cpqW4)
+================================================================================
 
-Format Nama File: [Judul / Caption Foto]
-- Nama file di Google Drive akan otomatis menjadi caption di pojok kiri bawah foto.
-Contoh:
-- Gotong Royong Dusun 2.jpg
+Nama file foto yang diunggah ke folder Galeri akan OTOMATIS MENJADI CAPTION FOTO
+yang tampil di pojok kiri bawah foto pada website.
+
+Contoh Nama File:
+- Gotong Royong Kebersihan Dusun 2.jpg
 - Pelatihan Pertanian Organik 2026.png
 - Panen Raya Padi Desa Sukanegara.jpg
 
---------------------------------------------------------------------------------
-4. SURAT MENYURAT & FORMULIR (Folder ID: 1HoyodhCKPisgj1X--3hH3wBxVMT9BnjU)
---------------------------------------------------------------------------------
-Untuk mengunggah formulir / surat yang dapat diunduh warga:
+================================================================================
+7. SURAT MENYURAT & FORMULIR DIGITAL (FOLDER ID: 1HoyodhCKPisgj1X--3hH3wBxVMT9BnjU)
+================================================================================
 
-Format Nama File: [Nama Surat / Formulir]
-Contoh:
+Upload surat keterangan atau formulir pelayanan warga dalam format PDF atau Word (.pdf, .docx).
+
+Contoh Nama File:
 - Surat Keterangan Domisili.pdf
 - Surat Keterangan Usaha (SKU).pdf
 - Formulir Permohonan KTP.docx
+- Peraturan Desa tentang APBDes 2026.pdf
 
---------------------------------------------------------------------------------
-5. BERITA & KEGIATAN (Folder ID: 1f2jx3TapKrqGl-SlAhuKIo4Juf-OxM17)
---------------------------------------------------------------------------------
-Upload dokumen / foto berita ke folder ini untuk langsung tampil di grid Berita.
+================================================================================
+8. BERITA & KEGIATAN DESA (FOLDER ID: 1f2jx3TapKrqGl-SlAhuKIo4Juf-OxM17)
+================================================================================
 
---------------------------------------------------------------------------------
-6. JAM OPERASIONAL KANTOR DESA
---------------------------------------------------------------------------------
+Upload foto atau berkas liputan kegiatan berita desa ke folder ini untuk langsung
+ditampilkan pada seksi Berita Desa di halaman utama website.
+
+================================================================================
+9. JAM OPERASIONAL KANTOR DESA SUKANEGARA
+================================================================================
+
 - Senin – Jumat : 08.00 – 15.00 WIB
 - Sabtu         : 08.00 – 12.00 WIB
 - Minggu        : Libur / Tutup
 
 ================================================================================
-Semua perubahan di Google Drive akan otomatis tampil di website secara live!
+SEMUA PERUBAHAN DI GOOGLE DRIVE AKAN OTOMATIS TAMPIL LIVE DI WEBSITE
+                  https://desa-sukanegara.my.id
 ================================================================================
